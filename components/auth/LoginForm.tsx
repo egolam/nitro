@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
@@ -22,44 +21,48 @@ import {
   FieldSeparator,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { LoaderCircle } from "lucide-react";
 import { SocialLoginBTN } from "./SocialLoginBTN";
 import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
-const formSchema = z.object({
+const magicSchema = z.object({
   email: z.email({ error: "Geçerli bir e-posta giriniz" }),
 });
 
 export function LoginForm() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const router = useRouter();
+  const form = useForm<z.infer<typeof magicSchema>>({
+    resolver: zodResolver(magicSchema),
     defaultValues: {
       email: "",
     },
   });
 
-  async function onSubmit(data: z.infer<typeof formSchema>) {
-    console.log(data);
-
-    const { error } = await authClient.signIn.magicLink({
+  async function onSubmit(data: z.infer<typeof magicSchema>) {
+    const { error } = await authClient.emailOtp.sendVerificationOtp({
       email: data.email,
-      callbackURL: "/",
+      type: "sign-in",
     });
 
     if (error) {
+      if (error.status === 429) {
+        return toast.error(
+          "Çok sık istek gönderiyorsunuz. Lütfen biraz bekleyip tekrar deneyin."
+        );
+      }
       return toast.error(error.message);
     }
 
-    return toast.success(
-      "E-posta başarıyle gönderildi. Spam klasörünü kontrol etmeyi unutmayınız."
-    );
+    router.replace(`/otp-dogrulama?eposta=${data.email}`);
   }
 
   return (
     <Card className="w-full px-8 gap-4">
       <CardHeader>
-        <CardTitle className="text-2xl text-violet-700 font-semibold">
+        <CardTitle className="text-2xl text-violet-700 font-semibold tracking-tighter">
           MARESANS{" "}
-          <span className="text-sm text-violet-700 font-normal">
+          <span className="text-sm text-violet-700 tracking-normal">
             &apos;a hoş geldiniz
           </span>
         </CardTitle>
@@ -96,16 +99,22 @@ export function LoginForm() {
       <CardFooter className="flex flex-col gap-4">
         <Field orientation="horizontal">
           <Button
-            disabled={form.formState.isLoading}
+            disabled={form.formState.isSubmitting}
             type="submit"
             className="w-full bg-violet-700 hover:cursor-pointer hover:bg-violet-800"
             form="magic-form"
           >
-            GİRİŞ YAP
+            {form.formState.isSubmitting ? (
+              <LoaderCircle className="animate-spin" />
+            ) : (
+              "GİRİŞ YAP"
+            )}
           </Button>
         </Field>
         <FieldSeparator className="w-full">Ya da</FieldSeparator>
-        <SocialLoginBTN />
+        <Field orientation="horizontal">
+          <SocialLoginBTN state={form.formState.isSubmitting} />
+        </Field>
       </CardFooter>
     </Card>
   );

@@ -1,9 +1,9 @@
 import { auth } from "@/auth";
-import { LoginForm } from "@/components/auth/LoginForm";
+import { OTPForm } from "@/components/auth/OTPForm";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-export default async function LoginPage() {
+export default async function OTPVerificationPage() {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -12,5 +12,5 @@ export default async function LoginPage() {
     redirect("/");
   }
 
-  return <LoginForm />;
+  return <OTPForm />;
 }

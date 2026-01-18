@@ -1,8 +1,12 @@
-import { APIError, betterAuth } from "better-auth";
-import { admin, magicLink, phoneNumber } from "better-auth/plugins";
+import { betterAuth } from "better-auth";
+import { admin, emailOTP, phoneNumber } from "better-auth/plugins";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "./db";
-import { sendEmail } from "./lib/email";
+import { Resend } from "resend";
+import { APIError } from "better-auth/api";
+import { localization } from "better-auth-localization";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -16,10 +20,16 @@ export const auth = betterAuth({
       strategy: "jwe",
     },
   },
+  rateLimit: {
+    enabled: true,
+    window: 60,
+    max: 100,
+  },
   socialProviders: {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      prompt: "select_account",
       mapProfileToUser: (profile) => {
         return {
           firstName: profile.given_name,
@@ -43,24 +53,32 @@ export const auth = betterAuth({
     },
   },
   plugins: [
-    admin(),
-    phoneNumber({
-      sendOTP: ({ phoneNumber, code }, ctx) => {},
+    localization({
+      defaultLocale: "tr-TR",
+      fallbackLocale: "default",
     }),
-    magicLink({
-      sendMagicLink: async ({ email, url }) => {
-        const res = await sendEmail({
-          to: email,
-          subject: "Şifresiz Giriş",
-          text: `Marsans'a giriş yapmak için lütfen tıklayın: ${url}`,
-        });
-        if (!res?.success) {
-          throw new APIError("INTERNAL_SERVER_ERROR", {
-            message: "E-posta gönderilemedi. Daha sonra tekrar deneyiniz",
+    admin(),
+    phoneNumber(),
+    emailOTP({
+      overrideDefaultEmailVerification: true,
+      allowedAttempts: 5,
+      expiresIn: 300,
+      sendVerificationOTP: async ({ email, otp, type }) => {
+        if (type === "sign-in") {
+          const { error } = await resend.emails.send({
+            from: "MARESANS <onboarding@resend.dev>",
+            to: email,
+            subject: "OTP ile giriş",
+            html: `<p>Giriş kodunuz: ${otp} (geçerlilik süresi 5 dakikadır)</p>`,
           });
+
+          if (error) {
+            throw new APIError("INTERNAL_SERVER_ERROR", {
+              message: "API Credentials Error",
+            });
+          }
         }
       },
-      expiresIn: 15 * 60,
     }),
   ],
   secret: process.env.BETTER_AUTH_SECRET,
