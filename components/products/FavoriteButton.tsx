@@ -35,7 +35,7 @@ export function FavoriteButton({
     <Button
       onClick={onToggle}
       disabled={pending}
-      className="bg-accent size-8 rounded text-red-500 hover:bg-accent hover:cursor-pointer"
+      className="bg-red-500/10 size-8 rounded text-red-500 hover:bg-red-500/20 hover:cursor-pointer"
     >
       <Heart className={`transition ${isFavorite && "fill-red-500"}`} />
     </Button>

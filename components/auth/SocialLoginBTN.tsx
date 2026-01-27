@@ -5,8 +5,11 @@ import { toast } from "sonner";
 import { useState } from "react";
 import { LoaderCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useSearchParams } from "next/navigation";
 
 export function SocialLoginBTN({ state }: { state: boolean }) {
+  const searchParams = useSearchParams();
+  const redirectURL = searchParams.get("redirectURL");
   const [loading, setLoading] = useState(false);
   async function googleLogin() {
     if (state === true) {
@@ -15,7 +18,7 @@ export function SocialLoginBTN({ state }: { state: boolean }) {
     setLoading(true);
     const { error } = await authClient.signIn.social({
       provider: "google",
-      callbackURL: "/",
+      callbackURL: redirectURL || "/",
     });
 
     if (error) {

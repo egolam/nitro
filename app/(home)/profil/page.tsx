@@ -44,7 +44,7 @@ export default async function ProfilePage() {
   });
 
   if (!session) {
-    redirect("/giris-yap");
+    redirect("/giris-yap?redirectURL=/profil");
   }
 
   return (

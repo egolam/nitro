@@ -67,7 +67,7 @@ export function OTPForm({ ...props }: React.ComponentProps<typeof Card>) {
       return toast.error(error.message);
     }
 
-    router.replace("/");
+    router.replace(sp.get("redirectURL") || "/");
   }
   return (
     <Card {...props} className="w-full px-8 text-sm">

@@ -17,7 +17,9 @@ export default async function EditAddressPage({
   });
 
   if (!session) {
-    redirect("/giris-yap");
+    redirect(
+      `/giris-yap?redirectURL=/profil/adreslerim/adres-duzenle?id=${addressId}`,
+    );
   } else if (!addressId) {
     redirect("/");
   }

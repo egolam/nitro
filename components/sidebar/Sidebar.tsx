@@ -31,7 +31,7 @@ import Link from "next/link";
 const items = [
   {
     title: "TÜM ESANSLAR",
-    url: "/esanslar",
+    url: "/",
     icon: Grid2X2,
   },
   {

@@ -9,7 +9,7 @@ export default async function AddAddressPage() {
   });
 
   if (!session) {
-    redirect("/giris-yap");
+    redirect("/giris-yap?redirectURL=/profil/adreslerim/adres-ekle");
   }
 
   return (

@@ -24,7 +24,7 @@ import { Input } from "@/components/ui/input";
 import { LoaderCircle } from "lucide-react";
 import { SocialLoginBTN } from "./SocialLoginBTN";
 import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const magicSchema = z.object({
   email: z.email({ error: "Geçerli bir e-posta giriniz" }),
@@ -32,6 +32,7 @@ const magicSchema = z.object({
 
 export function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const form = useForm<z.infer<typeof magicSchema>>({
     resolver: zodResolver(magicSchema),
     defaultValues: {
@@ -54,7 +55,12 @@ export function LoginForm() {
       return toast.error(error.message);
     }
 
-    router.replace(`/otp-dogrulama?eposta=${data.email}`);
+    const redirectURL = searchParams.get("redirectURL");
+    const redirectParam = redirectURL
+      ? `&redirectURL=${encodeURIComponent(redirectURL)}`
+      : "";
+
+    router.replace(`/otp-dogrulama?eposta=${data.email}${redirectParam}`);
   }
 
   return (

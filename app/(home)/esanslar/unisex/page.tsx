@@ -10,12 +10,13 @@ import {
 } from "@tanstack/react-query";
 import { getProductsAction } from "@/actions/shop/products/getProductsAction";
 
-export default async function HomePage() {
+export default async function UnisexPage() {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchInfiniteQuery({
-    queryKey: ["products"],
-    queryFn: ({ pageParam }) => getProductsAction(pageParam as string | null),
+    queryKey: ["products", "unisex"],
+    queryFn: ({ pageParam }) =>
+      getProductsAction(pageParam as string | null, "unisex"),
     initialPageParam: null,
   });
 
@@ -27,7 +28,7 @@ export default async function HomePage() {
     <section className="max-w-7xl flex-1 pt-4 flex flex-col gap-4">
       <header className="flex flex-col gap-4">
         <h3 className="text-violet-700 leading-none font-medium">
-          TÜM ESANSLAR
+          UNISEX ESANSLAR
         </h3>
         <div className="w-full flex flex-col sm:flex-row justify-between sm:items-end gap-4">
           <TagFilter />
@@ -36,7 +37,6 @@ export default async function HomePage() {
           </div>
         </div>
       </header>
-
       <HydrationBoundary state={dehydrate(queryClient)}>
         <ProductList userId={session?.user.id} />
       </HydrationBoundary>

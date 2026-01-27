@@ -10,13 +10,13 @@ const badgeVariants = cva(
     variants: {
       variant: {
         delux: "bg-yellow-400",
-        top: "",
-        new: "",
-        featured: "",
-        male: "",
-        female: "",
-        unisex: "",
-        unassigned: "",
+        top: "bg-background",
+        new: "bg-green-700",
+        featured: "bg-red-700",
+        male: "bg-blue-700",
+        female: "bg-pink-700",
+        unisex: "bg-neutral-700",
+        unassigned: "bg-neutral-700",
       },
     },
     defaultVariants: {

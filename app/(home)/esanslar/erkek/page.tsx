@@ -10,12 +10,13 @@ import {
 } from "@tanstack/react-query";
 import { getProductsAction } from "@/actions/shop/products/getProductsAction";
 
-export default async function HomePage() {
+export default async function ErkekPage() {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchInfiniteQuery({
-    queryKey: ["products"],
-    queryFn: ({ pageParam }) => getProductsAction(pageParam as string | null),
+    queryKey: ["products", "male"],
+    queryFn: ({ pageParam }) =>
+      getProductsAction(pageParam as string | null, "male"),
     initialPageParam: null,
   });
 
@@ -36,7 +37,6 @@ export default async function HomePage() {
           </div>
         </div>
       </header>
-
       <HydrationBoundary state={dehydrate(queryClient)}>
         <ProductList userId={session?.user.id} />
       </HydrationBoundary>

@@ -1,5 +1,6 @@
-import { sql } from "drizzle-orm";
 import { db } from "@/db";
+import { products, favourites, productTags, tags } from "@/db/schema";
+import { and, desc, lt, eq, exists, sql, inArray } from "drizzle-orm";
 
 export type ProductWithMeta = {
   id: string;
@@ -12,87 +13,124 @@ export type ProductWithMeta = {
   minBuyGrams: number;
 
   price: {
-    amount: number;
+    amountCents: number;
     currency: string;
     unitValue: number;
     unitType: string;
   } | null;
 
   tags: {
-    id: string;
-    name: "new" | "delux" | "featured" | "top";
+    id: number;
+    name: string;
   }[];
 
   isFavorite: boolean;
 };
 
-export async function getProducts(userId?: string) {
-  const result = await db.execute<ProductWithMeta>(sql`
-    SELECT
-      p.id,
-      p.factory_name AS "factoryName",
-      p.brand,
-      p.perfume,
-      p.gender,
-      p.image,
-      p.slug,
-      p.min_buy_grams AS "minBuyGrams",
+export async function getProducts(
+  userId?: string,
+  options?: {
+    cursor?: Date | null;
+    limit?: number;
+    gender?: "male" | "female" | "unisex" | null;
+    favoritesOnly?: boolean;
+    search?: string;
+    tags?: string[];
+  },
+): Promise<{ data: ProductWithMeta[]; nextCursor: Date | null }> {
+  const limit = options?.limit ?? 8;
+  const cursor = options?.cursor;
+  const gender = options?.gender;
+  const favoritesOnly = options?.favoritesOnly;
 
-      json_build_object(
-        'amount', pr.amount_cents,
-        'currency', pr.currency,
-        'unitValue', pr.unit_value,
-        'unitType', pr.unit_type
-      ) AS price,
-
-      COALESCE(
-        json_agg(
-          DISTINCT jsonb_build_object(
-            'id', t.id,
-            'name', t.name
+  const data = await db.query.products.findMany({
+    orderBy: (products, { desc }) => [desc(products.createdAt)],
+    limit: limit + 1,
+    where: and(
+      cursor ? lt(products.createdAt, cursor) : undefined,
+      gender ? eq(products.gender, gender) : undefined,
+      favoritesOnly && userId
+        ? exists(
+            db
+              .select()
+              .from(favourites)
+              .where(
+                and(
+                  eq(favourites.productId, products.id),
+                  eq(favourites.userId, userId),
+                ),
+              ),
           )
-        ) FILTER (WHERE t.id IS NOT NULL),
-        '[]'
-      ) AS tags,
+        : undefined,
+      options?.search
+        ? sql`${products.searchVector} @@ to_tsquery('simple', ${options.search
+            .trim()
+            .split(/\s+/)
+            .map((term) => `${term}:*`)
+            .join(" & ")})`
+        : undefined,
+      ...(options?.tags && options.tags.length > 0
+        ? options.tags.map((tag) =>
+            exists(
+              db
+                .select()
+                .from(productTags)
+                .innerJoin(tags, eq(productTags.tagId, tags.id))
+                .where(
+                  and(
+                    eq(productTags.productId, products.id),
+                    eq(tags.name, tag),
+                  ),
+                ),
+            ),
+          )
+        : []),
+    ),
+    with: {
+      price: true,
+      tags: {
+        with: {
+          tag: true,
+        },
+      },
+      favourites: userId
+        ? {
+            where: (fav, { eq }) => eq(fav.userId, userId),
+          }
+        : undefined,
+    },
+  });
 
-      ${
-        userId
-          ? sql`CASE WHEN f.product_id IS NOT NULL THEN true ELSE false END`
-          : sql`false`
-      } AS "isFavorite"
+  const hasMore = data.length > limit;
+  const slicedData = hasMore ? data.slice(0, limit) : data;
+  const nextCursor = hasMore
+    ? slicedData[slicedData.length - 1].createdAt
+    : null;
 
-    FROM products p
-
-    LEFT JOIN product_prices pr
-      ON pr.product_id = p.id
-
-    LEFT JOIN product_tags pt
-      ON pt.product_id = p.id
-
-    LEFT JOIN tags t
-      ON t.id = pt.tag_id
-
-    ${
-      userId
-        ? sql`
-          LEFT JOIN favorites f
-            ON f.product_id = p.id
-           AND f.user_id = ${userId}
-        `
-        : sql``
-    }
-
-    GROUP BY
-      p.id,
-      pr.amount_cents,
-      pr.currency,
-      pr.unit_value,
-      pr.unit_type,
-      ${userId ? sql`f.product_id` : sql`p.id`}
-
-    ORDER BY p.created_at DESC
-    LIMIT 9
-  `);
-
-  return result.rows;
+  return {
+    data: slicedData.map((p) => ({
+      id: p.id,
+      factoryName: p.factoryName,
+      brand: p.brand,
+      perfume: p.perfume,
+      gender: p.gender,
+      image: p.image,
+      slug: p.slug,
+      minBuyGrams: p.minBuyGrams,
+      price: p.price
+        ? {
+            amountCents: p.price.amountCents,
+            currency: p.price.currency,
+            unitValue: p.price.unitValue,
+            unitType: p.price.unitType,
+          }
+        : null,
+      tags: p.tags.map((pt) => ({
+        id: pt.tag.id,
+        name: pt.tag.name,
+      })),
+      isFavorite: !!p.favourites?.length,
+    })),
+    nextCursor,
+  };
 }

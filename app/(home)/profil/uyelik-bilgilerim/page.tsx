@@ -11,7 +11,7 @@ export default async function UserInfoPage() {
   });
 
   if (!session) {
-    redirect("/giris-yap");
+    redirect("/giris-yap?redirectURL=/profil/uyelik-bilgilerim");
   }
 
   return (

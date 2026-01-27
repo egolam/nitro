@@ -5,6 +5,7 @@ import { favourites } from "@/db/schema";
 import { authClient } from "@/lib/auth-client";
 import { headers } from "next/headers";
 import { and, eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 
 export async function toggleFavorite(productId: string) {
   const { data: session } = await authClient.getSession({
@@ -32,6 +33,8 @@ export async function toggleFavorite(productId: string) {
           ),
         );
 
+      revalidatePath("/profil/favorilerim");
+
       return {
         success: true,
         isFavorite: false,
@@ -43,6 +46,8 @@ export async function toggleFavorite(productId: string) {
       userId: session.user.id,
       productId,
     });
+
+    revalidatePath("/profil/favorilerim");
 
     return {
       success: true,

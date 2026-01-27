@@ -14,7 +14,7 @@ export default async function AddressesPage() {
   });
 
   if (!session) {
-    redirect("/giris-yap");
+    redirect("/giris-yap?redirectURL=/profil/adreslerim");
   }
 
   const data = await db
