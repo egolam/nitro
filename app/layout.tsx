@@ -1,19 +1,13 @@
 import type { Metadata } from "next";
-import {
-  Abel,
-  Exo,
-  Kedebideri,
-  Lexend,
-  Quicksand,
-  Rajdhani,
-  Urbanist,
-} from "next/font/google";
+import { Google_Sans, Google_Sans_Code, Jost, Outfit, Raleway } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import Providers from "@/providers/providers";
 
-const rajd = Rajdhani({
+// poppins raleway outfit bak
+const outfit = Jost({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "300"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -29,9 +23,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${rajd.className} antialiased min-h-dvh flex flex-col font-medium`}
+        className={`${outfit.className} antialiased min-h-dvh flex flex-col bg-accent`}
       >
-        {children}
+        <Providers>{children}</Providers>
         <Toaster richColors theme="light" />
       </body>
     </html>

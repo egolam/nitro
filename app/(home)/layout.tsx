@@ -1,4 +1,8 @@
+import { Footer } from "@/components/footer/Footer";
 import { Header } from "@/components/header/Header";
+import { MobileNavbar } from "@/components/navbar/MobileNavbar";
+import { AppSidebar } from "@/components/sidebar/Sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 
 export default function HomeLayout({
   children,
@@ -6,9 +10,16 @@ export default function HomeLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <>
-      <Header />
-      <main>{children}</main>
-    </>
+    <div className="">
+      <SidebarProvider className="flex-col">
+        <AppSidebar />
+        <Header />
+        <main className="px-4 xl:px-0 flex-1 flex min-h-[calc(100vh-16rem)] justify-center">
+          {children}
+        </main>
+        <MobileNavbar />
+        <Footer />
+      </SidebarProvider>
+    </div>
   );
 }

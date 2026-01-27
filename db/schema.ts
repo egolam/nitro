@@ -1,4 +1,4 @@
-import { relations } from "drizzle-orm";
+import { InferSelectModel, relations } from "drizzle-orm";
 import {
   boolean,
   index,
@@ -9,8 +9,18 @@ import {
   serial,
   text,
   timestamp,
+  uniqueIndex,
   uuid,
 } from "drizzle-orm/pg-core";
+
+export const userTypeEnum = pgEnum("user_type", ["individual", "corporate"]);
+
+export const genderEnum = pgEnum("gender", [
+  "male",
+  "female",
+  "unisex",
+  "unassigned",
+]);
 
 export const users = pgTable("users", {
   id: text("id").primaryKey(),
@@ -29,8 +39,6 @@ export const users = pgTable("users", {
   banExpires: timestamp("ban_expires"),
   phoneNumber: text("phone_number").unique(),
   phoneNumberVerified: boolean("phone_number_verified"),
-  firstName: text("first_name").default("").notNull(),
-  lastName: text("last_name").default("").notNull(),
 });
 
 export const usersRelations = relations(users, ({ many }) => ({
@@ -59,7 +67,7 @@ export const accounts = pgTable(
       .$onUpdate(() => /* @__PURE__ */ new Date())
       .notNull(),
   },
-  (table) => [index("accounts_userId_idx").on(table.userId)]
+  (table) => [index("accounts_userId_idx").on(table.userId)],
 );
 
 export const accountsRelations = relations(accounts, ({ one }) => ({
@@ -86,7 +94,7 @@ export const sessions = pgTable(
       .references(() => users.id, { onDelete: "cascade" }),
     impersonatedBy: text("impersonated_by"),
   },
-  (table) => [index("sessions_userId_idx").on(table.userId)]
+  (table) => [index("sessions_userId_idx").on(table.userId)],
 );
 
 export const sessionsRelations = relations(sessions, ({ one }) => ({
@@ -109,15 +117,8 @@ export const verifications = pgTable(
       .$onUpdate(() => /* @__PURE__ */ new Date())
       .notNull(),
   },
-  (table) => [index("verifications_identifier_idx").on(table.identifier)]
+  (table) => [index("verifications_identifier_idx").on(table.identifier)],
 );
-
-export const genderEnum = pgEnum("gender", [
-  "male",
-  "female",
-  "unisex",
-  "unassigned",
-]);
 
 export const products = pgTable(
   "products",
@@ -129,9 +130,9 @@ export const products = pgTable(
     brand: text("brand").notNull(),
     slug: text("slug").notNull().unique(),
     image: text("image").default(
-      "https://content.maresans.com/images/product1.webp"
+      "https://content.maresans.com/images/product1.webp",
     ),
-    description: text("description"),
+    description: text("description").default("tarafıdan üretilmiştir"),
     gender: genderEnum().default("unassigned"),
     minBuyGrams: integer("min_buy_grams").notNull().default(50),
     minBuyThreshold: integer("min_buy_threshold").notNull().default(1000),
@@ -146,11 +147,11 @@ export const products = pgTable(
     index("idx_product_factory_name").on(t.factoryName),
     index("idx_product_perfume").on(t.perfume),
     index("idx_product_brand").on(t.brand),
-  ]
+  ],
 );
 
 export const manufacturers = pgTable("manufacturers", {
-  id: uuid("id").defaultRandom().primaryKey(),
+  id: serial("id").primaryKey(),
   name: text("name").notNull().unique(),
 });
 
@@ -161,7 +162,7 @@ export const productManufacturers = pgTable(
       .notNull()
       .references(() => products.id, { onDelete: "cascade" }),
 
-    manufacturerId: uuid("manufacturer_id")
+    manufacturerId: serial("manufacturer_id")
       .notNull()
       .references(() => manufacturers.id, { onDelete: "cascade" }),
   },
@@ -169,36 +170,11 @@ export const productManufacturers = pgTable(
     primaryKey({ columns: [t.productId, t.manufacturerId] }),
     index("idx_product_manufacturers_product_id").on(t.productId),
     index("idx_product_manufacturers_manufacturer_id").on(t.manufacturerId),
-  ]
-);
-
-export const productManufacturerRelations = relations(products, ({ many }) => ({
-  productManufacturers: many(productManufacturers),
-}));
-
-export const manufacturerProductRelations = relations(
-  manufacturers,
-  ({ many }) => ({
-    productManufacturers: many(productManufacturers),
-  })
-);
-
-export const productManufacturerRelationsJunction = relations(
-  productManufacturers,
-  ({ one }) => ({
-    product: one(products, {
-      fields: [productManufacturers.productId],
-      references: [products.id],
-    }),
-    manufacturer: one(manufacturers, {
-      fields: [productManufacturers.manufacturerId],
-      references: [manufacturers.id],
-    }),
-  })
+  ],
 );
 
 export const certificates = pgTable("certificates", {
-  id: uuid("id").defaultRandom().primaryKey(),
+  id: serial("id").primaryKey(),
   name: text("name").notNull().unique(),
 });
 
@@ -209,7 +185,7 @@ export const productCertificates = pgTable(
       .notNull()
       .references(() => products.id, { onDelete: "cascade" }),
 
-    certificateId: uuid("certificate_id")
+    certificateId: serial("certificate_id")
       .notNull()
       .references(() => certificates.id, { onDelete: "cascade" }),
   },
@@ -217,32 +193,7 @@ export const productCertificates = pgTable(
     primaryKey({ columns: [t.productId, t.certificateId] }),
     index("idx_product_certificates_product_id").on(t.productId),
     index("idx_product_certificates_certificate_id").on(t.certificateId),
-  ]
-);
-
-export const productCertificateRelations = relations(products, ({ many }) => ({
-  certificates: many(productCertificates),
-}));
-
-export const certificateProductRelations = relations(
-  certificates,
-  ({ many }) => ({
-    products: many(productCertificates),
-  })
-);
-
-export const productCertificateRelationsJunction = relations(
-  productCertificates,
-  ({ one }) => ({
-    product: one(products, {
-      fields: [productCertificates.productId],
-      references: [products.id],
-    }),
-    certificate: one(certificates, {
-      fields: [productCertificates.certificateId],
-      references: [certificates.id],
-    }),
-  })
+  ],
 );
 
 export const tags = pgTable("tags", {
@@ -265,33 +216,11 @@ export const productTags = pgTable(
     primaryKey({ columns: [t.productId, t.tagId] }),
     index("idx_product_tags_product_id").on(t.productId),
     index("idx_product_tags_tag_id").on(t.tagId),
-  ]
-);
-
-export const productTagRelations = relations(products, ({ many }) => ({
-  productTags: many(productTags),
-}));
-
-export const tagProductRelations = relations(tags, ({ many }) => ({
-  productTags: many(productTags),
-}));
-
-export const productTagRelationsJunction = relations(
-  productTags,
-  ({ one }) => ({
-    product: one(products, {
-      fields: [productTags.productId],
-      references: [products.id],
-    }),
-    tag: one(tags, {
-      fields: [productTags.tagId],
-      references: [tags.id],
-    }),
-  })
+  ],
 );
 
 export const productPrices = pgTable("product_prices", {
-  id: uuid("id").defaultRandom().primaryKey(),
+  id: serial("id").primaryKey(),
 
   productId: uuid("product_id")
     .notNull()
@@ -311,15 +240,8 @@ export const productPrices = pgTable("product_prices", {
     .notNull(),
 });
 
-export const productPricesRelations = relations(productPrices, ({ one }) => ({
-  product: one(products, {
-    fields: [productPrices.productId],
-    references: [products.id],
-  }),
-}));
-
 export const productFills = pgTable("product_fills", {
-  id: uuid("id").defaultRandom().primaryKey(),
+  id: serial("id").primaryKey(),
 
   productId: uuid("product_id")
     .notNull()
@@ -334,24 +256,8 @@ export const productFills = pgTable("product_fills", {
     .notNull(),
 });
 
-export const productFillsRelations = relations(productFills, ({ one }) => ({
-  product: one(products, {
-    fields: [productFills.productId],
-    references: [products.id],
-  }),
-}));
-
-export const rackRowEnum = pgEnum("rack_row", [
-  "red",
-  "green",
-  "blue",
-  "black",
-  "yellow",
-  "unassigned",
-]);
-
 export const productStorage = pgTable("product_storage", {
-  id: uuid("id").defaultRandom().primaryKey(),
+  id: serial("id").primaryKey(),
 
   productId: uuid("product_id")
     .notNull()
@@ -359,15 +265,8 @@ export const productStorage = pgTable("product_storage", {
     .unique(),
 
   rackNumber: integer("rack_number").notNull().default(0),
-  row: rackRowEnum("row").notNull().default("unassigned"),
+  row: text("row").notNull().default("unassigned"),
 });
-
-export const productStorageRelations = relations(productStorage, ({ one }) => ({
-  product: one(products, {
-    fields: [productStorage.productId],
-    references: [products.id],
-  }),
-}));
 
 export const favourites = pgTable(
   "favorites",
@@ -386,24 +285,154 @@ export const favourites = pgTable(
     primaryKey({ columns: [t.userId, t.productId] }),
     index("idx_favorites_user_id").on(t.userId),
     index("idx_favorites_product_id").on(t.productId),
-  ]
+    uniqueIndex("fav_unique").on(t.userId, t.productId),
+  ],
 );
 
-export const usersFavoritesRelations = relations(users, ({ many }) => ({
-  usersToFavorites: many(favourites),
+export const userAddresses = pgTable(
+  "user_addresses",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+
+    sameAddress: boolean("same_address").notNull().default(true),
+    userType: userTypeEnum("user_type").notNull().default("individual"),
+
+    name: text("name").notNull(),
+    nameBill: text("name_bill").notNull().default(""),
+    surname: text("surname").notNull(),
+    surnameBill: text("surname_bill").notNull().default(""),
+    phone: text("phone").notNull(),
+    phoneBill: text("phone_bill").notNull(),
+
+    province: text("province").notNull(),
+    provinceBill: text("province_bill").notNull().default(""),
+    district: text("district").notNull(),
+    districtBill: text("district_bill").notNull().default(""),
+
+    addressLine: text("address_line").notNull(),
+    addressLineBill: text("address_line_bill").notNull().default(""),
+
+    firmName: text("firm_name").notNull().default(""),
+    taxOffice: text("tax_office").notNull().default(""),
+    taxId: text("tax_id").notNull().default(""),
+
+    isDefault: boolean("is_default").notNull().default(true),
+    isActive: boolean("is_active").notNull().default(true),
+
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at")
+      .defaultNow()
+      .$onUpdate(() => /* @__PURE__ */ new Date())
+      .notNull(),
+  },
+  (t) => [index("idx_user_addresses_user_id").on(t.userId)],
+);
+
+export type UserAddress = InferSelectModel<typeof userAddresses>;
+export type NewUserAddress = InferSelectModel<typeof userAddresses>;
+
+export const productsRelations = relations(products, ({ one, many }) => ({
+  price: one(productPrices),
+
+  fill: one(productFills),
+  storage: one(productStorage),
+
+  manufacturers: many(productManufacturers),
+  certificates: many(productCertificates),
+  tags: many(productTags),
+
+  favourites: many(favourites),
 }));
 
-export const productsFavoritesRelations = relations(products, ({ many }) => ({
-  usersToFavorites: many(favourites),
+export const productPricesRelations = relations(productPrices, ({ one }) => ({
+  product: one(products, {
+    fields: [productPrices.productId],
+    references: [products.id],
+  }),
 }));
 
-export const favoritesJunction = relations(favourites, ({ one }) => ({
+export const productStorageRelations = relations(productStorage, ({ one }) => ({
+  product: one(products, {
+    fields: [productStorage.productId],
+    references: [products.id],
+  }),
+}));
+
+export const manufacturersRelations = relations(manufacturers, ({ many }) => ({
+  products: many(productManufacturers),
+}));
+
+export const productManufacturersRelations = relations(
+  productManufacturers,
+  ({ one }) => ({
+    product: one(products, {
+      fields: [productManufacturers.productId],
+      references: [products.id],
+    }),
+    manufacturer: one(manufacturers, {
+      fields: [productManufacturers.manufacturerId],
+      references: [manufacturers.id],
+    }),
+  }),
+);
+
+export const certificatesRelations = relations(certificates, ({ many }) => ({
+  products: many(productCertificates),
+}));
+
+export const productCertificatesRelations = relations(
+  productCertificates,
+  ({ one }) => ({
+    product: one(products, {
+      fields: [productCertificates.productId],
+      references: [products.id],
+    }),
+    certificate: one(certificates, {
+      fields: [productCertificates.certificateId],
+      references: [certificates.id],
+    }),
+  }),
+);
+
+export const tagsRelations = relations(tags, ({ many }) => ({
+  products: many(productTags),
+}));
+
+export const productTagsRelations = relations(productTags, ({ one }) => ({
+  product: one(products, {
+    fields: [productTags.productId],
+    references: [products.id],
+  }),
+  tag: one(tags, {
+    fields: [productTags.tagId],
+    references: [tags.id],
+  }),
+}));
+
+export const favouritesRelations = relations(favourites, ({ one }) => ({
+  user: one(users, {
+    fields: [favourites.userId],
+    references: [users.id],
+  }),
   product: one(products, {
     fields: [favourites.productId],
     references: [products.id],
   }),
+}));
+
+export const userAddressesRelations = relations(userAddresses, ({ one }) => ({
   user: one(users, {
-    fields: [favourites.userId],
+    fields: [userAddresses.userId],
     references: [users.id],
+  }),
+}));
+
+export const productFillsRelations = relations(productFills, ({ one }) => ({
+  product: one(products, {
+    fields: [productFills.productId],
+    references: [products.id],
   }),
 }));

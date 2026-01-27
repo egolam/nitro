@@ -22,7 +22,7 @@ export function SocialLoginBTN({ state }: { state: boolean }) {
       if (error.status === 429) {
         setLoading(false);
         return toast.error(
-          "Bu kadar sık istek göndremezsiniz. Lütfen biraz bekleyin."
+          "Bu kadar sık istek göndremezsiniz. Lütfen biraz bekleyin.",
         );
       }
       setLoading(false);
@@ -38,7 +38,9 @@ export function SocialLoginBTN({ state }: { state: boolean }) {
       type="button"
       variant="outline"
       disabled={loading || state === true}
-      className={cn("w-full hover:cursor-pointer")}
+      className={cn(
+        "w-full rounded hover:cursor-pointer hover:underline hover:bg-background font-normal",
+      )}
     >
       {loading ? (
         <LoaderCircle className="animate-spin" />

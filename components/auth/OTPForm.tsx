@@ -27,6 +27,7 @@ import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { authClient } from "@/lib/auth-client";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { LoaderCircle } from "lucide-react";
 
 const otpSchema = z.object({
   otp: z
@@ -60,7 +61,7 @@ export function OTPForm({ ...props }: React.ComponentProps<typeof Card>) {
       console.log(error);
       if (error.status === 429) {
         return toast.error(
-          "Çok sık istek gönderiyorsunuz. Lütfen biraz bekleyip tekrar deneyin."
+          "Çok sık istek gönderiyorsunuz. Lütfen biraz bekleyip tekrar deneyin.",
         );
       }
       return toast.error(error.message);
@@ -125,14 +126,15 @@ export function OTPForm({ ...props }: React.ComponentProps<typeof Card>) {
                 className="w-full bg-violet-700 hover:cursor-pointer hover:bg-violet-800"
                 disabled={form.formState.isSubmitting}
               >
-                ONAYLA
+                {form.formState.isSubmitting ? (
+                  <LoaderCircle className="animate-spin" />
+                ) : (
+                  "ONAYLA"
+                )}
               </Button>
               <FieldDescription className="text-right font-medium">
                 Kod gelmedi mi?{" "}
-                <Link
-                  href="/giris-yap"
-                  className="text-foreground"
-                >
+                <Link href="/giris-yap" className="text-foreground">
                   Tekrar Gönder
                 </Link>
               </FieldDescription>

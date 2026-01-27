@@ -48,7 +48,7 @@ export function LoginForm() {
     if (error) {
       if (error.status === 429) {
         return toast.error(
-          "Çok sık istek gönderiyorsunuz. Lütfen biraz bekleyip tekrar deneyin."
+          "Çok sık istek gönderiyorsunuz. Lütfen biraz bekleyip tekrar deneyin.",
         );
       }
       return toast.error(error.message);
@@ -60,13 +60,13 @@ export function LoginForm() {
   return (
     <Card className="w-full px-8 gap-4">
       <CardHeader>
-        <CardTitle className="text-2xl text-violet-700 font-semibold tracking-tighter">
+        <CardTitle className="text-2xl text-violet-700 tracking-tighter">
           MARESANS{" "}
           <span className="text-sm text-violet-700 tracking-normal">
             &apos;a hoş geldiniz
           </span>
         </CardTitle>
-        <CardDescription className="text-sm">
+        <CardDescription className="text-sm text-muted-foreground">
           Şifresiz giriş yapmak için lütfen e-postanızı giriniz
         </CardDescription>
       </CardHeader>
@@ -78,14 +78,16 @@ export function LoginForm() {
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="magic">E-POSTA</FieldLabel>
+                  <FieldLabel htmlFor="magic" className="text-muted-foreground">
+                    E-POSTA
+                  </FieldLabel>
                   <Input
                     {...field}
                     id="magic"
                     aria-invalid={fieldState.invalid}
                     placeholder="merhaba@marsans.com"
                     autoComplete="off"
-                    className="text-sm"
+                    className="text-sm bg-background rounded"
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -101,7 +103,7 @@ export function LoginForm() {
           <Button
             disabled={form.formState.isSubmitting}
             type="submit"
-            className="w-full bg-violet-700 hover:cursor-pointer hover:bg-violet-800"
+            className="w-full bg-violet-700 hover:cursor-pointer hover:bg-violet-600 rounded font-normal"
             form="magic-form"
           >
             {form.formState.isSubmitting ? (
@@ -111,7 +113,7 @@ export function LoginForm() {
             )}
           </Button>
         </Field>
-        <FieldSeparator className="w-full">Ya da</FieldSeparator>
+        <FieldSeparator className="w-full bg-accent">Ya da</FieldSeparator>
         <Field orientation="horizontal">
           <SocialLoginBTN state={form.formState.isSubmitting} />
         </Field>

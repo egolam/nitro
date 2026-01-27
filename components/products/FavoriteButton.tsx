@@ -1,0 +1,43 @@
+"use client";
+
+import { useState, useTransition } from "react";
+import { Heart } from "lucide-react";
+
+import { toast } from "sonner";
+import { toggleFavorite } from "@/actions/shop/products/toggleFavorite";
+import { Button } from "../ui/button";
+
+export function FavoriteButton({
+  productId,
+  isFavorite: initialIsFavorite,
+}: {
+  productId: string;
+  isFavorite: boolean;
+}) {
+  const [isFavorite, setIsFavorite] = useState(initialIsFavorite);
+  const [pending, startTransition] = useTransition();
+
+  function onToggle() {
+    if (pending) return;
+    setIsFavorite((prev) => !prev);
+
+    startTransition(async () => {
+      const res = await toggleFavorite(productId);
+
+      if (!res?.success) {
+        setIsFavorite((prev) => !prev);
+        toast.error("Bir hata oluştu");
+      }
+    });
+  }
+
+  return (
+    <Button
+      onClick={onToggle}
+      disabled={pending}
+      className="bg-accent size-8 rounded text-red-500 hover:bg-accent hover:cursor-pointer"
+    >
+      <Heart className={`transition ${isFavorite && "fill-red-500"}`} />
+    </Button>
+  );
+}

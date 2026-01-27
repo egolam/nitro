@@ -18,38 +18,33 @@ export const auth = betterAuth({
       enabled: true,
       maxAge: 5 * 60,
       strategy: "jwe",
+      refreshCache: {
+        updateAge: 60,
+      },
     },
   },
   rateLimit: {
     enabled: true,
     window: 60,
-    max: 100,
+    max: 512,
+    customRules: {
+      "/email-otp/send-verification-otp": {
+        max: 1,
+        window: 300,
+      },
+    },
   },
   socialProviders: {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       prompt: "select_account",
-      mapProfileToUser: (profile) => {
-        return {
-          firstName: profile.given_name,
-          lastName: profile.family_name,
-        };
-      },
+      accessType: "offline",
     },
   },
-  user: {
-    additionalFields: {
-      firstName: {
-        type: "string",
-        required: true,
-        defaultValue: "",
-      },
-      lastName: {
-        type: "string",
-        required: true,
-        defaultValue: "",
-      },
+  account: {
+    accountLinking: {
+      enabled: true,
     },
   },
   plugins: [

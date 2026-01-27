@@ -1,0 +1,362 @@
+[
+  {
+    "sku": "8429103",
+    "factory_name": "Alpine Mist Lab",
+    "perfume": "Silver Fern",
+    "brand": "Ethereal",
+    "slug": "/silver-fern-ethereal",
+    "gender": "unisex"
+  },
+  {
+    "sku": "5510293",
+    "factory_name": "Coastal Scents Co",
+    "perfume": "Oceanic Drift",
+    "brand": "Azure",
+    "slug": "/oceanic-drift-azure",
+    "gender": "male"
+  },
+  {
+    "sku": "1192847",
+    "factory_name": "Velvet Petal Inc",
+    "perfume": "Midnight Rose",
+    "brand": "Lumina",
+    "slug": "/midnight-rose-lumina",
+    "gender": "female"
+  },
+  {
+    "sku": "6637281",
+    "factory_name": "Golden Grain Distillery",
+    "perfume": "Amber Harvest",
+    "brand": "Vesta",
+    "slug": "/amber-harvest-vesta",
+    "gender": "unisex"
+  },
+  {
+    "sku": "9928374",
+    "factory_name": "Urban Edge Bottling",
+    "perfume": "Concrete Rain",
+    "brand": "Stark",
+    "slug": "/concrete-rain-stark",
+    "gender": "male"
+  },
+  {
+    "sku": "4482710",
+    "factory_name": "Royal Bloom Factory",
+    "perfume": "Imperial Jasmine",
+    "brand": "Regalia",
+    "slug": "/imperial-jasmine-regalia",
+    "gender": "female"
+  },
+  {
+    "sku": "3321984",
+    "factory_name": "Neon Night Labs",
+    "perfume": "Electric Iris",
+    "brand": "Volt",
+    "slug": "/electric-iris-volt",
+    "gender": "unisex"
+  },
+  {
+    "sku": "2291034",
+    "factory_name": "Old Oak Artisans",
+    "perfume": "Cedar Smoke",
+    "brand": "Heritage",
+    "slug": "/cedar-smoke-heritage",
+    "gender": "male"
+  },
+  {
+    "sku": "7718293",
+    "factory_name": "Silk Road Essence",
+    "perfume": "Saffron Silk",
+    "brand": "Nomad",
+    "slug": "/saffron-silk-nomad",
+    "gender": "female"
+  },
+  {
+    "sku": "5521094",
+    "factory_name": "Frost Peak Production",
+    "perfume": "Glacier Air",
+    "brand": "Summit",
+    "slug": "/glacier-air-summit",
+    "gender": "unisex"
+  },
+  {
+    "sku": "1029384",
+    "factory_name": "Solar Flare Fragrance",
+    "perfume": "Golden Ray",
+    "brand": "Helios",
+    "slug": "/golden-ray-helios",
+    "gender": "female"
+  },
+  {
+    "sku": "8847261",
+    "factory_name": "Deep Sea Botanicals",
+    "perfume": "Abyssal Pearl",
+    "brand": "Triton",
+    "slug": "/abyssal-pearl-triton",
+    "gender": "unisex"
+  },
+  {
+    "sku": "3382716",
+    "factory_name": "Iron Forge Perfumery",
+    "perfume": "Steel Magnolia",
+    "brand": "Forge",
+    "slug": "/steel-magnolia-forge",
+    "gender": "male"
+  },
+  {
+    "sku": "4491023",
+    "factory_name": "Mystic Grove",
+    "perfume": "Elderberry Moon",
+    "brand": "Arcane",
+    "slug": "/elderberry-moon-arcane",
+    "gender": "female"
+  },
+  {
+    "sku": "6610293",
+    "factory_name": "Desert Sun Mfg",
+    "perfume": "Sandstorm Oudh",
+    "brand": "Dune",
+    "slug": "/sandstorm-oudh-dune",
+    "gender": "male"
+  },
+  {
+    "sku": "2283741",
+    "factory_name": "Verdant Valley",
+    "perfume": "Mossy Creek",
+    "brand": "Wilder",
+    "slug": "/mossy-creek-wilder",
+    "gender": "unisex"
+  },
+  {
+    "sku": "5501928",
+    "factory_name": "Cloud Nine Labs",
+    "perfume": "Cirrus Dream",
+    "brand": "Aero",
+    "slug": "/cirrus-dream-aero",
+    "gender": "female"
+  },
+  {
+    "sku": "9938472",
+    "factory_name": "Tonic & Timber",
+    "perfume": "Gin & Juniper",
+    "brand": "Botany",
+    "slug": "/gin-juniper-botany",
+    "gender": "male"
+  },
+  {
+    "sku": "1122334",
+    "factory_name": "Velvet Room",
+    "perfume": "Scarlet Satin",
+    "brand": "Noir",
+    "slug": "/scarlet-satin-noir",
+    "gender": "female"
+  },
+  {
+    "sku": "7744556",
+    "factory_name": "Zenith Production",
+    "perfume": "Apex Musk",
+    "brand": "Zenith",
+    "slug": "/apex-musk-zenith",
+    "gender": "male"
+  },
+  {
+    "sku": "4455667",
+    "factory_name": "Ember & Ash",
+    "perfume": "Phoenix Breath",
+    "brand": "Cinder",
+    "slug": "/phoenix-breath-cinder",
+    "gender": "unisex"
+  },
+  {
+    "sku": "8899001",
+    "factory_name": "Lush Life Co",
+    "perfume": "Guava Nectar",
+    "brand": "Tropics",
+    "slug": "/guava-nectar-tropics",
+    "gender": "female"
+  },
+  {
+    "sku": "2233445",
+    "factory_name": "Stone Mason Scents",
+    "perfume": "Marble Dust",
+    "brand": "Statue",
+    "slug": "/marble-dust-statue",
+    "gender": "unisex"
+  },
+  {
+    "sku": "5566778",
+    "factory_name": "Morning Dew Mfg",
+    "perfume": "Early Gray",
+    "brand": "Steep",
+    "slug": "/early-gray-steep",
+    "gender": "female"
+  },
+  {
+    "sku": "1188229",
+    "factory_name": "Midnight Oil Lab",
+    "perfume": "Dark Roast",
+    "brand": "Barista",
+    "slug": "/dark-roast-barista",
+    "gender": "male"
+  },
+  {
+    "sku": "9900112",
+    "factory_name": "Pure Spark",
+    "perfume": "Ozone",
+    "brand": "Static",
+    "slug": "/ozone-static",
+    "gender": "unisex"
+  },
+  {
+    "sku": "6677889",
+    "factory_name": "Green Thumb Co",
+    "perfume": "Tomato Leaf",
+    "brand": "Garden",
+    "slug": "/tomato-leaf-garden",
+    "gender": "unisex"
+  },
+  {
+    "sku": "3344551",
+    "factory_name": "Royal Silk",
+    "perfume": "Chiffon",
+    "brand": "Loom",
+    "slug": "/chiffon-loom",
+    "gender": "female"
+  },
+  {
+    "sku": "2211443",
+    "factory_name": "Grizzly Works",
+    "perfume": "Pine Needle",
+    "brand": "Summit",
+    "slug": "/pine-needle-summit",
+    "gender": "male"
+  },
+  {
+    "sku": "8877665",
+    "factory_name": "Candy Shop Labs",
+    "perfume": "Sugar Rush",
+    "brand": "Confection",
+    "slug": "/sugar-rush-confection",
+    "gender": "female"
+  },
+  {
+    "sku": "5544332",
+    "factory_name": "Antique House",
+    "perfume": "Old Paper",
+    "brand": "Archive",
+    "slug": "/old-paper-archive",
+    "gender": "unisex"
+  },
+  {
+    "sku": "9988776",
+    "factory_name": "Thunder Lab",
+    "perfume": "Storm Surge",
+    "brand": "Bolt",
+    "slug": "/storm-surge-bolt",
+    "gender": "male"
+  },
+  {
+    "sku": "1144778",
+    "factory_name": "Berry Best",
+    "perfume": "Wild Bramble",
+    "brand": "Thicket",
+    "slug": "/wild-bramble-thicket",
+    "gender": "female"
+  },
+  {
+    "sku": "6633221",
+    "factory_name": "Coastal Tide",
+    "perfume": "Salt Spray",
+    "brand": "Marina",
+    "slug": "/salt-spray-marina",
+    "gender": "unisex"
+  },
+  {
+    "sku": "4411998",
+    "factory_name": "Copper Pot",
+    "perfume": "Spiced Chai",
+    "brand": "Kettle",
+    "slug": "/spiced-chai-kettle",
+    "gender": "female"
+  },
+  {
+    "sku": "2255883",
+    "factory_name": "Black Tie Mfg",
+    "perfume": "Tuxedo",
+    "brand": "Formal",
+    "slug": "/tuxedo-formal",
+    "gender": "male"
+  },
+  {
+    "sku": "7788331",
+    "factory_name": "Open Field",
+    "perfume": "Clover",
+    "brand": "Pasture",
+    "slug": "/clover-pasture",
+    "gender": "unisex"
+  },
+  {
+    "sku": "3366992",
+    "factory_name": "Night Sky",
+    "perfume": "Stardust",
+    "brand": "Cosmos",
+    "slug": "/stardust-cosmos",
+    "gender": "female"
+  },
+  {
+    "sku": "1155994",
+    "factory_name": "Leather Works",
+    "perfume": "Raw Hide",
+    "brand": "Tannery",
+    "slug": "/raw-hide-tannery",
+    "gender": "male"
+  },
+  {
+    "sku": "4422887",
+    "factory_name": "Fresh Cut",
+    "perfume": "Mown Grass",
+    "brand": "Lawn",
+    "slug": "/mown-grass-lawn",
+    "gender": "unisex"
+  },
+  {
+    "sku": "9966330",
+    "factory_name": "Sweet Tooth",
+    "perfume": "Vanilla Bean",
+    "brand": "Pod",
+    "slug": "/vanilla-bean-pod",
+    "gender": "female"
+  },
+  {
+    "sku": "5588114",
+    "factory_name": "Mountain Peak",
+    "perfume": "Snow Cap",
+    "brand": "Ridge",
+    "slug": "/snow-cap-ridge",
+    "gender": "unisex"
+  },
+  {
+    "sku": "2277441",
+    "factory_name": "Industrial Scents",
+    "perfume": "Oil & Iron",
+    "brand": "Engine",
+    "slug": "/oil-iron-engine",
+    "gender": "male"
+  },
+  {
+    "sku": "8811552",
+    "factory_name": "Orchard Grow",
+    "perfume": "Crisp Apple",
+    "brand": "Cider",
+    "slug": "/crisp-apple-cider",
+    "gender": "female"
+  },
+  {
+    "sku": "3399227",
+    "factory_name": "After Hours",
+    "perfume": "Bourbon",
+    "brand": "Cask",
+    "slug": "/bourbon-cask",
+    "gender": "male"
+  }
+]
