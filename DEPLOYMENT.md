@@ -73,3 +73,23 @@ You can run this locally against production DB: `npx tsx db/seed-prod.ts`.
 ### Option C: Admin Panel
 
 Long-term, you should build an `/admin` page in the app to create products via a UI.
+
+---
+
+## 4. Troubleshooting
+
+### Error: `getaddrinfo ENOTFOUND ...`
+
+If you see an error like `[cause]: Error: getaddrinfo ENOTFOUND maresans-db-olf0ie` in your logs, your application **cannot find the database**.
+
+**Cause**: The `DATABASE_URL` environment variable is pointing to a hostname that does not exist or is not accessible from the application container.
+
+**Solution**:
+
+1. Go to your **Database** dashboard in Dokploy.
+2. Find the **Internal Host** or **Service Name**. It is usually the name of the database service (e.g., `postgres` or `maresans-db`).
+3. If your App and Database are in the **same project/network** in Dokploy, use the **service name** as the hostname.
+   - Example DB Service Name: `my-db`
+   - Correct URL: `postgres://user:pass@my-db:5432/db_name`
+4. If you copied the "Internal URL" from Dokploy, ensure it is exactly correct.
+5. **Redeploy** the application after changing the environment variable.

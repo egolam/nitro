@@ -1,6 +1,8 @@
 #!/bin/sh
 # Run migrations (safe schema push)
 echo "Running db:push..."
+# DEBUG: Print the hostname we are trying to connect to (hiding credentials)
+node -e 'try { const url = new URL(process.env.DATABASE_URL); console.log("Connecting to DB Host:", url.hostname); } catch (e) { console.error("Invalid DATABASE_URL"); }'
 npm run db:push
 
 # OPTIONAL: Run seed if explicitly enabled via env var (safer!)
