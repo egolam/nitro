@@ -6,8 +6,6 @@ import { Resend } from "resend";
 import { APIError } from "better-auth/api";
 import { localization } from "better-auth-localization";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "pg",
@@ -60,6 +58,7 @@ export const auth = betterAuth({
       expiresIn: 300,
       sendVerificationOTP: async ({ email, otp, type }) => {
         if (type === "sign-in") {
+          const resend = new Resend(process.env.RESEND_API_KEY);
           const { error } = await resend.emails.send({
             from: "MARESANS <onboarding@resend.dev>",
             to: email,
