@@ -30,7 +30,7 @@ export const auth = betterAuth({
     customRules: {
       "/email-otp/send-verification-otp": {
         max: 1,
-        window: 300,
+        window: 1,
       },
     },
   },

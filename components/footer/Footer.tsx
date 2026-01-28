@@ -202,7 +202,7 @@ export function Footer() {
             </ul>
           </div>
         </div>
-        <div className="border-t border-violet-600 pt-3 mt-4 sm:pb-3">
+        <div className="border-t border-violet-500 pt-3 mt-4 sm:pb-3">
           <p className="text-xs opacity-75 text-center">
             © 2026 Maresans. Tüm Hakları Saklıdır.
           </p>

@@ -1,6 +1,10 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@theme {
+  --color-violet-700: oklch(0.5413 0.2466 293.01);
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

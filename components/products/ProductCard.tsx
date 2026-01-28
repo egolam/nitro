@@ -12,6 +12,8 @@ import { formatPrice } from "@/helper/formatPrice";
 import { FavoriteButton } from "@/components/products/FavoriteButton";
 import { ProductWithMeta } from "@/data/products/getProducts";
 import Link from "next/link";
+import { AddOrderButton } from "./AddOrderButton";
+import { ProgressBar } from "./ProgressBar";
 
 type ProductCardProps = {
   product: ProductWithMeta;
@@ -37,7 +39,10 @@ export function ProductCard({ product, userId }: ProductCardProps) {
       <div className="p-4 flex-1 flex flex-col justify-between">
         <CardHeader className="gap-2 p-0">
           <CardTitle className="text-sm font-semibold capitalize flex items-center justify-between">
-            <Link href={`/${product.slug}`} className="hover:text-violet-700 transition-colors">
+            <Link
+              href={`/${product.slug}`}
+              className="hover:text-violet-700 transition-colors"
+            >
               <h3>{product.factoryName}</h3>
             </Link>
 
@@ -65,18 +70,22 @@ export function ProductCard({ product, userId }: ProductCardProps) {
               {formatPrice(product.price?.amountCents || 0)}{" "}
               <span className="text-muted-foreground text-xs">/50gr</span>
             </p>
-            <div className="h-5 w-full bg-accent rounded-xs relative overflow-hidden">
-              <div className="h-5 w-1/2 absolute left-0 bg-green-600 rounded-r-xs"></div>
-              <p className="text-xs text-black leading-none absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 font-medium">
-                500/1000gr
-              </p>
-            </div>
+            <ProgressBar
+              current={product.totalDemand}
+              total={Math.max(
+                product.minBuyThreshold,
+                Math.ceil(product.totalDemand / product.minBuyThreshold) *
+                  product.minBuyThreshold,
+              )}
+              threshold={product.minBuyThreshold}
+            />
           </div>
         </CardContent>
         <CardFooter className="gap-2 p-0 mt-4">
-          <Button className="flex-1 h-8 bg-violet-700 hover:cursor-pointer hover:bg-violet-600 rounded font-normal text-white">
-            TALEP EKLE
-          </Button>
+          <AddOrderButton
+            productId={product.id}
+            minBuyGrams={product.minBuyGrams}
+          />
           {userId ? (
             <FavoriteButton
               productId={product.id}

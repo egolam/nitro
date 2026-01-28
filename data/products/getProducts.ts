@@ -11,6 +11,8 @@ export type ProductWithMeta = {
   image: string | null;
   slug: string;
   minBuyGrams: number;
+  minBuyThreshold: number;
+  totalDemand: number;
 
   price: {
     amountCents: number;
@@ -86,6 +88,12 @@ export async function getProducts(
           )
         : []),
     ),
+    extras: {
+      totalDemand:
+        sql<number>`(SELECT COALESCE(SUM(amount), 0) FROM product_demands WHERE product_id = ${products.id} AND deleted_at IS NULL)`.as(
+          "total_demand",
+        ),
+    },
     with: {
       price: true,
       tags: {
@@ -117,6 +125,8 @@ export async function getProducts(
       image: p.image,
       slug: p.slug,
       minBuyGrams: p.minBuyGrams,
+      minBuyThreshold: p.minBuyThreshold,
+      totalDemand: Number(p.totalDemand),
       price: p.price
         ? {
             amountCents: p.price.amountCents,

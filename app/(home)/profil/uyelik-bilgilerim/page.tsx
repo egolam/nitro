@@ -28,7 +28,9 @@ export default async function UserInfoPage() {
               <RiVerifiedBadgeFill className="text-violet-700 size-4" />
             </div>
 
-            <p className="text-sm text-muted-foreground">robot4qbu@gmail.com</p>
+            <p className="text-sm text-muted-foreground">
+              {session.user.email}
+            </p>
           </div>
         </div>
       </header>

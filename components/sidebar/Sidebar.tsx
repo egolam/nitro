@@ -53,8 +53,8 @@ const items = [
 
 const tools = [
   {
-    title: "ESANS HESAPLAMA ARACI",
-    url: "#",
+    title: "PARFÜM HESAPLAMA ARACI",
+    url: "https://formulasyon.com",
     icon: Calculator,
   },
   {
@@ -103,13 +103,18 @@ export function AppSidebar() {
               {tools.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild className="hover:bg-transparent">
-                    <a
+                    <Link
                       href={item.url}
+                      target={
+                        item.url === "https://formulasyon.com"
+                          ? "_blank"
+                          : "_self"
+                      }
                       className="text-muted-foreground hover:text-violet-700 transition-colors"
                     >
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

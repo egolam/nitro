@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import { LogoutButton } from "@/components/auth/LogoutButton";
+import { GoBackBTN } from "@/components/shared/GoBackBTN";
 import { headers } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -9,6 +10,7 @@ import {
   FaShoppingCart,
   FaComment,
 } from "react-icons/fa";
+import { FaClock } from "react-icons/fa6";
 import { MdFavorite } from "react-icons/md";
 const profileNav = [
   {
@@ -24,6 +26,12 @@ const profileNav = [
     icon: <FaMapMarkerAlt />,
   },
   { id: 2, href: "/taleplerim", title: "TALEPLERİM", icon: <FaShoppingCart /> },
+  {
+    id: 5,
+    href: "/profil/gecmis-siparislerim",
+    title: "GEÇMİŞ SİPARİŞLERİM",
+    icon: <FaClock />,
+  },
   {
     id: 3,
     href: "/profil/favorilerim",
@@ -49,7 +57,7 @@ export default async function ProfilePage() {
 
   return (
     <section className="flex-1 flex flex-col gap-4">
-      <header className="">
+      <header className="flex items-center  gap-2">
         <h3 className="text-violet-700 leading-none font-medium">PROFİL</h3>
       </header>
       <nav>

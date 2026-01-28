@@ -19,7 +19,7 @@ export function Header() {
           <SidebarTrigger className="text-violet-700 size-8 hover:cursor-pointer rounded hover:text-violet-500" />
           <h1
             className={cn(
-              "text-2xl text-violet-700 leading-none font-bold",
+              "text-2xl text-violet-700 leading-none font-bold tracking-tight",
               saira.className,
             )}
           >

@@ -26,7 +26,7 @@ export default function RootLayout({
         className={`${outfit.className} antialiased min-h-dvh flex flex-col bg-accent`}
       >
         <Providers>{children}</Providers>
-        <Toaster richColors theme="light" />
+        <Toaster richColors theme="light" position="top-center"/>
       </body>
     </html>
   );

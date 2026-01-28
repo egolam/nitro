@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { Heart } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { toast } from "sonner";
 import { toggleFavorite } from "@/actions/shop/products/toggleFavorite";
@@ -17,6 +18,8 @@ export function FavoriteButton({
   const [isFavorite, setIsFavorite] = useState(initialIsFavorite);
   const [pending, startTransition] = useTransition();
 
+  const queryClient = useQueryClient();
+
   function onToggle() {
     if (pending) return;
     setIsFavorite((prev) => !prev);
@@ -27,6 +30,10 @@ export function FavoriteButton({
       if (!res?.success) {
         setIsFavorite((prev) => !prev);
         toast.error("Bir hata oluştu");
+      } else {
+        queryClient.invalidateQueries({
+          queryKey: ["products", null, { favoritesOnly: true }],
+        });
       }
     });
   }

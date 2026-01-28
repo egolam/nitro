@@ -33,7 +33,9 @@ export default async function EditAddressPage({
   return (
     <section className="flex flex-col gap-4">
       <header className="flex justify-between">
-        <h3 className="text-violet-700 leading-none">ADRES DÜZENLE</h3>
+        <h3 className="text-violet-700 leading-none font-medium">
+          ADRES DÜZENLE
+        </h3>
       </header>
       <AddAddressForm
         isEditing={true}
