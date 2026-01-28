@@ -46,6 +46,8 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
 COPY --from=builder /app/public ./public
+COPY migrate-and-start.sh ./migrate-and-start.sh
+RUN chmod +x ./migrate-and-start.sh
 
 # Set the correct permission for prerender cache
 RUN mkdir .next
