@@ -49,6 +49,8 @@ COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/drizzle.config.ts ./drizzle.config.ts
+COPY --from=builder /app/db ./db
 COPY migrate-and-start.sh ./migrate-and-start.sh
 RUN chmod +x ./migrate-and-start.sh
 
