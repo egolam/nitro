@@ -2,7 +2,7 @@ import { getProductsAction } from "@/actions/shop/products/getProductsAction";
 import { ProductList } from "@/components/products/ProductList";
 import { SearchInput } from "@/components/products/SearchInput";
 import { TagFilter } from "@/components/products/TagFilter";
-import { authClient } from "@/lib/auth-client";
+import { auth } from "@/auth";
 import {
   HydrationBoundary,
   QueryClient,
@@ -17,6 +17,8 @@ export const metadata = {
   title: "Favorilerim | MARESANS",
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function FavoritesPage() {
   const queryClient = new QueryClient();
 
@@ -28,8 +30,8 @@ export default async function FavoritesPage() {
     initialPageParam: 0,
   });
 
-  const { data: session } = await authClient.getSession({
-    fetchOptions: { headers: await headers() },
+  const session = await auth.api.getSession({
+    headers: await headers(),
   });
 
   if (!session?.user) {

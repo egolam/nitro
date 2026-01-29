@@ -10,6 +10,8 @@ export const metadata = {
   title: "Sipariş Özeti | MARESANS",
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function OrderSummaryPage() {
   const session = await auth.api.getSession({
     headers: await headers(),

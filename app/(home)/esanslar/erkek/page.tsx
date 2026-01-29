@@ -1,7 +1,7 @@
 import { ProductList } from "@/components/products/ProductList";
 import { SearchInput } from "@/components/products/SearchInput";
 import { TagFilter } from "@/components/products/TagFilter";
-import { authClient } from "@/lib/auth-client";
+import { auth } from "@/auth";
 import { headers } from "next/headers";
 import {
   HydrationBoundary,
@@ -10,6 +10,8 @@ import {
 } from "@tanstack/react-query";
 import { getProductsAction } from "@/actions/shop/products/getProductsAction";
 import { getSettings } from "@/data/settings/getSettings";
+
+export const dynamic = "force-dynamic";
 
 export default async function ErkekPage() {
   const queryClient = new QueryClient();
@@ -21,8 +23,8 @@ export default async function ErkekPage() {
     initialPageParam: 0,
   });
 
-  const { data: session } = await authClient.getSession({
-    fetchOptions: { headers: await headers() },
+  const session = await auth.api.getSession({
+    headers: await headers(),
   });
 
   const settings = await getSettings();
