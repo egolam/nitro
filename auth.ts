@@ -2,7 +2,7 @@ import { betterAuth } from "better-auth";
 import { admin, emailOTP, phoneNumber } from "better-auth/plugins";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "./db";
-import { Resend } from "resend";
+
 import { APIError } from "better-auth/api";
 import { localization } from "better-auth-localization";
 
@@ -58,17 +58,29 @@ export const auth = betterAuth({
       expiresIn: 300,
       sendVerificationOTP: async ({ email, otp, type }) => {
         if (type === "sign-in") {
-          const resend = new Resend(process.env.RESEND_API_KEY);
-          const { error } = await resend.emails.send({
-            from: "MARESANS <onboarding@resend.dev>",
-            to: email,
-            subject: "OTP ile giriş",
-            html: `<p>Giriş kodunuz: ${otp} (geçerlilik süresi 5 dakikadır)</p>`,
+          const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+            method: "POST",
+            headers: {
+              accept: "application/json",
+              "api-key": process.env.BREVO_API_KEY!,
+              "content-type": "application/json",
+            },
+            body: JSON.stringify({
+              sender: {
+                name: "MARESANS",
+                email: process.env.SENDER_EMAIL!,
+              },
+              to: [{ email }],
+              subject: "OTP ile giriş",
+              htmlContent: `<p>Giriş kodunuz: ${otp} (geçerlilik süresi 5 dakikadır)</p>`,
+            }),
           });
 
-          if (error) {
+          if (!response.ok) {
+            const error = await response.json();
+            console.error("Brevo API Error:", error);
             throw new APIError("INTERNAL_SERVER_ERROR", {
-              message: "API Credentials Error",
+              message: "Email sending failed",
             });
           }
         }
