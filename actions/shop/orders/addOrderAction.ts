@@ -7,6 +7,7 @@ import { productDemands } from "@/db/schema/orders";
 import { products } from "@/db/schema/products";
 import { revalidatePath } from "next/cache";
 import { sql, eq } from "drizzle-orm";
+import { getSettings } from "@/data/settings/getSettings";
 
 export async function addOrderAction(productId: string, amount: number) {
   const session = await auth.api.getSession({
@@ -15,6 +16,16 @@ export async function addOrderAction(productId: string, amount: number) {
 
   if (!session?.user?.id) {
     return { error: "Oturum açmanız gerekiyor" };
+  }
+
+  const settings = await getSettings();
+  const currentStatus = settings?.saleStatus?.name;
+
+  if (currentStatus !== "open") {
+    revalidatePath("/", "layout");
+    return {
+      error: "Sadece 'Talep Toplanıyor' aşamasında sipariş ekleyebilirsiniz.",
+    };
   }
 
   try {

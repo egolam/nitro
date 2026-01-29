@@ -18,9 +18,14 @@ import { ProgressBar } from "./ProgressBar";
 type ProductCardProps = {
   product: ProductWithMeta;
   userId?: string;
+  canAddOrder?: boolean;
 };
 
-export function ProductCard({ product, userId }: ProductCardProps) {
+export function ProductCard({
+  product,
+  userId,
+  canAddOrder = true,
+}: ProductCardProps) {
   return (
     <Card className="h-96 rounded overflow-hidden bg-background shadow-lg text-foreground">
       <div className="w-full relative h-1/2 bg-input">
@@ -67,8 +72,17 @@ export function ProductCard({ product, userId }: ProductCardProps) {
         <CardContent className="p-0 mt-4">
           <div className="flex flex-col gap-2">
             <p className="text-end leading-none font-medium">
-              {formatPrice(product.price?.amountCents || 0)}{" "}
-              <span className="text-muted-foreground text-xs">/50gr</span>
+              {
+                product.price?.minBuyPrice
+                  ? product.price.minBuyPrice.toLocaleString("tr-TR", {
+                      style: "currency",
+                      currency: "TRY",
+                    })
+                  : "Fiyat Sorunuz" // Fallback if calculation fails or no price
+              }{" "}
+              <span className="text-muted-foreground text-xs">
+                /{product.minBuyGrams}gr
+              </span>
             </p>
             <ProgressBar
               current={product.totalDemand}
@@ -85,6 +99,7 @@ export function ProductCard({ product, userId }: ProductCardProps) {
           <AddOrderButton
             productId={product.id}
             minBuyGrams={product.minBuyGrams}
+            disabled={!canAddOrder}
           />
           {userId ? (
             <FavoriteButton

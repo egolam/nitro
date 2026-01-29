@@ -1,6 +1,8 @@
 import { db } from "@/db";
-import { products, favourites, productTags, tags } from "@/db/schema";
+import { products, favourites, productTags, tags, settings } from "@/db/schema";
 import { and, desc, lt, eq, exists, sql, inArray } from "drizzle-orm";
+import { getExchangeRate } from "@/lib/exchange-rate";
+import { calculateProductPricePerGram, roundPrice } from "@/lib/pricing";
 
 export type ProductWithMeta = {
   id: string;
@@ -19,6 +21,10 @@ export type ProductWithMeta = {
     currency: string;
     unitValue: number;
     unitType: string;
+    // Calculated fields
+    pricePerGram?: number;
+    minBuyPrice?: number;
+    priceCurrency?: string;
   } | null;
 
   tags: {
@@ -32,24 +38,27 @@ export type ProductWithMeta = {
 export async function getProducts(
   userId?: string,
   options?: {
-    cursor?: Date | null;
+    cursor?: number | null;
     limit?: number;
     gender?: "male" | "female" | "unisex" | null;
     favoritesOnly?: boolean;
     search?: string;
     tags?: string[];
   },
-): Promise<{ data: ProductWithMeta[]; nextCursor: Date | null }> {
+): Promise<{ data: ProductWithMeta[]; nextCursor: number | null }> {
   const limit = options?.limit ?? 8;
-  const cursor = options?.cursor;
+  const cursor = options?.cursor ?? 0;
   const gender = options?.gender;
   const favoritesOnly = options?.favoritesOnly;
 
   const data = await db.query.products.findMany({
-    orderBy: (products, { desc }) => [desc(products.createdAt)],
+    orderBy: (products, { desc, sql }) => [
+      desc(sql`total_demand`),
+      desc(products.createdAt),
+    ],
     limit: limit + 1,
+    offset: cursor,
     where: and(
-      cursor ? lt(products.createdAt, cursor) : undefined,
       gender ? eq(products.gender, gender) : undefined,
       favoritesOnly && userId
         ? exists(
@@ -111,36 +120,58 @@ export async function getProducts(
 
   const hasMore = data.length > limit;
   const slicedData = hasMore ? data.slice(0, limit) : data;
-  const nextCursor = hasMore
-    ? slicedData[slicedData.length - 1].createdAt
-    : null;
+  const nextCursor = hasMore ? cursor + limit : null;
+
+  const [appSettings] = await db.select().from(settings).limit(1);
+  const exchangeRate = await getExchangeRate();
 
   return {
-    data: slicedData.map((p) => ({
-      id: p.id,
-      factoryName: p.factoryName,
-      brand: p.brand,
-      perfume: p.perfume,
-      gender: p.gender,
-      image: p.image,
-      slug: p.slug,
-      minBuyGrams: p.minBuyGrams,
-      minBuyThreshold: p.minBuyThreshold,
-      totalDemand: Number(p.totalDemand),
-      price: p.price
-        ? {
-            amountCents: p.price.amountCents,
-            currency: p.price.currency,
-            unitValue: p.price.unitValue,
-            unitType: p.price.unitType,
-          }
-        : null,
-      tags: p.tags.map((pt) => ({
-        id: pt.tag.id,
-        name: pt.tag.name,
-      })),
-      isFavorite: !!p.favourites?.length,
-    })),
+    data: slicedData.map((p) => {
+      let pricePerGram = 0;
+      let minBuyPrice = 0;
+
+      if (p.price && appSettings) {
+        pricePerGram = calculateProductPricePerGram(
+          p.price.amountCents,
+          {
+            vat: appSettings.vat,
+            profitMargin: appSettings.profitMargin,
+            discount: appSettings.discount,
+          },
+          exchangeRate,
+        );
+        minBuyPrice = pricePerGram * p.minBuyGrams;
+      }
+
+      return {
+        id: p.id,
+        factoryName: p.factoryName,
+        brand: p.brand,
+        perfume: p.perfume,
+        gender: p.gender,
+        image: p.image,
+        slug: p.slug,
+        minBuyGrams: p.minBuyGrams,
+        minBuyThreshold: p.minBuyThreshold,
+        totalDemand: Number(p.totalDemand),
+        price: p.price
+          ? {
+              amountCents: p.price.amountCents,
+              currency: p.price.currency,
+              unitValue: p.price.unitValue,
+              unitType: p.price.unitType,
+              pricePerGram: roundPrice(pricePerGram),
+              minBuyPrice: roundPrice(minBuyPrice),
+              priceCurrency: "TRY",
+            }
+          : null,
+        tags: p.tags.map((pt) => ({
+          id: pt.tag.id,
+          name: pt.tag.name,
+        })),
+        isFavorite: !!p.favourites?.length,
+      };
+    }),
     nextCursor,
   };
 }

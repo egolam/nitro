@@ -11,11 +11,16 @@ import { ProductCardSkeleton } from "@/components/products/ProductCardSkeleton";
 type ProductListProps = {
   userId?: string;
   favoritesOnly?: boolean;
+  canAddOrder?: boolean;
 };
 
 import { usePathname, useSearchParams } from "next/navigation";
 
-export function ProductList({ userId, favoritesOnly }: ProductListProps) {
+export function ProductList({
+  userId,
+  favoritesOnly,
+  canAddOrder = true,
+}: ProductListProps) {
   const { ref, inView } = useInView();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -49,7 +54,7 @@ export function ProductList({ userId, favoritesOnly }: ProductListProps) {
       searchParams.get("q"),
       internalTags,
     ],
-    queryFn: async ({ pageParam }: { pageParam: string | null }) => {
+    queryFn: async ({ pageParam }: { pageParam: number }) => {
       const res = await getProductsAction(
         pageParam,
         gender,
@@ -59,9 +64,8 @@ export function ProductList({ userId, favoritesOnly }: ProductListProps) {
       );
       return res;
     },
-    initialPageParam: null as string | null,
-    getNextPageParam: (lastPage) =>
-      lastPage.nextCursor ? lastPage.nextCursor.toISOString() : null,
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
   });
 
   useEffect(() => {
@@ -105,7 +109,11 @@ export function ProductList({ userId, favoritesOnly }: ProductListProps) {
     <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       {products.map((product) => (
         <li key={product.id} className="">
-          <ProductCard product={product} userId={userId} />
+          <ProductCard
+            product={product}
+            userId={userId}
+            canAddOrder={canAddOrder}
+          />
         </li>
       ))}
       {(isFetchingNextPage || hasNextPage) && (

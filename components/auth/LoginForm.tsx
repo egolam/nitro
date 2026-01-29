@@ -64,7 +64,7 @@ export function LoginForm() {
   }
 
   return (
-    <Card className="w-full px-8 gap-4">
+    <Card className="w-full sm:w-5/6 lg:w-4/6 xl:w-3/6 px-8 gap-4">
       <CardHeader>
         <CardTitle className="text-2xl text-violet-700 tracking-tighter">
           MARESANS{" "}

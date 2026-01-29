@@ -6,7 +6,7 @@ import { auth } from "@/auth";
 import { headers } from "next/headers";
 
 export async function getProductsAction(
-  cursor: string | null,
+  cursor: number | null,
   gender?: "male" | "female" | "unisex" | null,
   favoritesOnly?: boolean,
   search?: string,
@@ -15,9 +15,9 @@ export async function getProductsAction(
   const session = await auth.api.getSession({
     headers: await headers(),
   });
-  const dateCursor = cursor ? new Date(cursor) : null;
+
   return getProducts(session?.user.id, {
-    cursor: dateCursor,
+    cursor,
     limit: 8,
     gender,
     favoritesOnly,

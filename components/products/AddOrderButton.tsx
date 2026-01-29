@@ -11,11 +11,13 @@ import { ProductWithMeta } from "@/data/products/getProducts";
 interface AddOrderButtonProps {
   productId: string;
   minBuyGrams: number;
+  disabled?: boolean;
 }
 
 export function AddOrderButton({
   productId,
   minBuyGrams,
+  disabled,
 }: AddOrderButtonProps) {
   const { draftOrders, setDraftOrder, removeDraftOrder } = useOrderStore();
   const quantity = draftOrders[productId];
@@ -45,6 +47,7 @@ export function AddOrderButton({
       const result = await addOrderAction(productId, quantity);
       if (result.error) {
         toast.error(result.error);
+        removeDraftOrder(productId);
       } else {
         toast.success("Talep oluşturuldu");
         removeDraftOrder(productId);
@@ -81,6 +84,7 @@ export function AddOrderButton({
     return (
       <Button
         onClick={handleStart}
+        disabled={disabled}
         className="flex-1 h-8 bg-violet-700 hover:cursor-pointer hover:bg-violet-600 rounded font-normal text-white"
       >
         TALEP EKLE

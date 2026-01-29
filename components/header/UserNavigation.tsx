@@ -20,7 +20,7 @@ export function UserNavigation() {
   if (!session) return null;
 
   return (
-    <nav className=" items-center gap-1 hidden sm:flex">
+    <nav className=" items-center gap-1 flex">
       {userLinks.map((link) => {
         const isActive = pathname === link.href;
         const Icon = link.icon;
@@ -30,10 +30,11 @@ export function UserNavigation() {
             key={link.href}
             href={link.href}
             className={cn(
-              "flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground",
+              "flex items-center gap-2 px-2 py-2 rounded text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground",
               isActive
                 ? "text-violet-700 bg-violet-50"
                 : "text-muted-foreground",
+              link.href !== "/profil/favorilerim" && "hidden md:flex",
             )}
           >
             <Icon className={cn("size-4 fill-current")} />

@@ -9,6 +9,7 @@ import {
   dehydrate,
 } from "@tanstack/react-query";
 import { getProductsAction } from "@/actions/shop/products/getProductsAction";
+import { getSettings } from "@/data/settings/getSettings";
 
 export default async function KadinPage() {
   const queryClient = new QueryClient();
@@ -16,16 +17,19 @@ export default async function KadinPage() {
   await queryClient.prefetchInfiniteQuery({
     queryKey: ["products", "female"],
     queryFn: ({ pageParam }) =>
-      getProductsAction(pageParam as string | null, "female"),
-    initialPageParam: null,
+      getProductsAction(pageParam as number | null, "female"),
+    initialPageParam: 0,
   });
 
   const { data: session } = await authClient.getSession({
     fetchOptions: { headers: await headers() },
   });
 
+  const settings = await getSettings();
+  const canAddOrder = settings?.saleStatus?.name === "open";
+
   return (
-    <section className="max-w-7xl flex-1 pt-4 flex flex-col gap-4">
+    <section className="max-w-7xl flex-1 pt-4 flex flex-col gap-4 w-full">
       <header className="flex flex-col gap-4">
         <h3 className="text-violet-700 leading-none font-medium">
           KADIN ESANSLAR
@@ -38,7 +42,7 @@ export default async function KadinPage() {
         </div>
       </header>
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <ProductList userId={session?.user.id} />
+        <ProductList userId={session?.user.id} canAddOrder={canAddOrder} />
       </HydrationBoundary>
     </section>
   );

@@ -8,6 +8,7 @@ import {
   QueryClient,
   dehydrate,
 } from "@tanstack/react-query";
+import { getSettings } from "@/data/settings/getSettings";
 import { getProductsAction } from "@/actions/shop/products/getProductsAction";
 
 export default async function HomePage() {
@@ -15,16 +16,19 @@ export default async function HomePage() {
 
   await queryClient.prefetchInfiniteQuery({
     queryKey: ["products"],
-    queryFn: ({ pageParam }) => getProductsAction(pageParam as string | null),
-    initialPageParam: null,
+    queryFn: ({ pageParam }) => getProductsAction(pageParam as number | null),
+    initialPageParam: 0,
   });
 
   const { data: session } = await authClient.getSession({
     fetchOptions: { headers: await headers() },
   });
 
+  const settings = await getSettings();
+  const canAddOrder = settings?.saleStatus?.name === "open";
+
   return (
-    <section className="max-w-7xl flex-1 pt-4 flex flex-col gap-4">
+    <section className="max-w-7xl flex-1 pt-4 flex flex-col gap-4 w-full">
       <header className="flex flex-col gap-4">
         <h3 className="text-violet-700 leading-none font-medium">
           TÜM ESANSLAR
@@ -38,7 +42,7 @@ export default async function HomePage() {
       </header>
 
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <ProductList userId={session?.user.id} />
+        <ProductList userId={session?.user.id} canAddOrder={canAddOrder} />
       </HydrationBoundary>
     </section>
   );

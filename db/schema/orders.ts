@@ -9,6 +9,7 @@ import {
 } from "drizzle-orm/pg-core";
 import { users } from "./users";
 import { products } from "./products";
+import { productDemandStatusEnum } from "./enums";
 
 export const productDemands = pgTable(
   "product_demands",
@@ -28,7 +29,7 @@ export const productDemands = pgTable(
     amount: integer("amount").notNull().default(50),
 
     // Status can be 'pending', 'valid', etc.
-    status: text("status").notNull().default("pending"),
+    status: productDemandStatusEnum("status").notNull().default("pending"),
 
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at")

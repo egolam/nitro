@@ -70,7 +70,7 @@ export function OTPForm({ ...props }: React.ComponentProps<typeof Card>) {
     router.replace(sp.get("redirectURL") || "/");
   }
   return (
-    <Card {...props} className="w-full px-8 text-sm">
+    <Card {...props} className="w-full sm:w-xs px-8 gap-4">
       <CardHeader>
         <CardTitle className="sr-only">Onay kodunu giriniz</CardTitle>
         <CardDescription className="sr-only">
@@ -88,7 +88,7 @@ export function OTPForm({ ...props }: React.ComponentProps<typeof Card>) {
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel
                     htmlFor="otp"
-                    className="text-2xl text-violet-700 font-semibold tracking-tighter"
+                    className="text-2xl text-violet-700 tracking-tighter font-normal"
                   >
                     DOĞRULAMA KODU
                   </FieldLabel>
@@ -100,7 +100,7 @@ export function OTPForm({ ...props }: React.ComponentProps<typeof Card>) {
                     autoComplete="off"
                     pattern={REGEXP_ONLY_DIGITS}
                   >
-                    <InputOTPGroup className="w-full justify-between *:data-[slot=input-otp-slot]:border">
+                    <InputOTPGroup className="w-full justify-between *:data-[slot=input-otp-slot]:border *:data-[slot=input-otp-slot]:rounded *:data-[slot=input-otp-slot]:bg-background">
                       <InputOTPSlot index={0} />
                       <InputOTPSlot index={1} />
                       <InputOTPSlot index={2} />
@@ -113,7 +113,7 @@ export function OTPForm({ ...props }: React.ComponentProps<typeof Card>) {
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
-                  <FieldDescription className="font-medium">
+                  <FieldDescription className="">
                     E-postanıza gelen 6 haneli doğrulama kodunu giriniz
                   </FieldDescription>
                 </Field>
@@ -123,7 +123,7 @@ export function OTPForm({ ...props }: React.ComponentProps<typeof Card>) {
               <Button
                 type="submit"
                 form="otp-form"
-                className="w-full bg-violet-700 hover:cursor-pointer hover:bg-violet-800"
+                className="w-full bg-violet-700 hover:cursor-pointer hover:bg-violet-600 rounded font-normal"
                 disabled={form.formState.isSubmitting}
               >
                 {form.formState.isSubmitting ? (
@@ -132,7 +132,7 @@ export function OTPForm({ ...props }: React.ComponentProps<typeof Card>) {
                   "ONAYLA"
                 )}
               </Button>
-              <FieldDescription className="text-right font-medium">
+              <FieldDescription className="text-right">
                 Kod gelmedi mi?{" "}
                 <Link href="/giris-yap" className="text-foreground">
                   Tekrar Gönder

@@ -10,11 +10,11 @@ export default function HomeLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="">
+    <div>
       <SidebarProvider className="flex-col">
         <AppSidebar />
         <Header />
-        <main className="px-4 xl:px-0 flex-1 flex min-h-[calc(100vh-16rem)] justify-center">
+        <main className="px-4 xl:px-0 flex-1 flex min-h-screen justify-center">
           {children}
         </main>
         <MobileNavbar />

@@ -6,6 +6,7 @@ import { productDemands } from "@/db/schema";
 import { eq, and, isNull, desc } from "drizzle-orm";
 import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
+import { getSettings } from "@/data/settings/getSettings";
 
 export async function deleteOrderAction(productId: string) {
   const session = await auth.api.getSession({
@@ -14,6 +15,15 @@ export async function deleteOrderAction(productId: string) {
 
   if (!session?.user?.id) {
     return { error: "Oturum açmanız gerekiyor" };
+  }
+
+  const settings = await getSettings();
+  const currentStatus = settings?.saleStatus?.name;
+
+  if (currentStatus !== "open" && currentStatus !== "partial") {
+    return {
+      error: "Talep ekleme ve silme işlemleri sona erdi",
+    };
   }
 
   try {

@@ -11,39 +11,54 @@ import {
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-export default async function FavorilerimPage() {
+import { getSettings } from "@/data/settings/getSettings";
+
+export const metadata = {
+  title: "Favorilerim | MARESANS",
+};
+
+export default async function FavoritesPage() {
+  const queryClient = new QueryClient();
+
+  // Prefetch first page
+  await queryClient.prefetchInfiniteQuery({
+    queryKey: ["products", null, { favoritesOnly: true }], // Match key in ProductList
+    queryFn: ({ pageParam }) =>
+      getProductsAction(pageParam as number | null, null, true),
+    initialPageParam: 0,
+  });
+
   const { data: session } = await authClient.getSession({
     fetchOptions: { headers: await headers() },
   });
 
-  if (!session) {
-    redirect("/giris-yap?redirectURL=/profil/favorilerim");
+  if (!session?.user) {
+    redirect("/giris-yap");
   }
 
-  const queryClient = new QueryClient();
-
-  await queryClient.prefetchInfiniteQuery({
-    queryKey: ["products", null, { favoritesOnly: true }],
-    queryFn: ({ pageParam }) =>
-      getProductsAction(pageParam as string | null, null, true),
-    initialPageParam: null,
-  });
+  const settings = await getSettings();
+  const canAddOrder = settings?.saleStatus?.name === "open";
 
   return (
-    <section className="flex flex-col gap-4 max-w-7xl flex-1 w-full">
+    <section className="max-w-7xl flex-1 flex flex-col gap-4 w-full">
       <header className="flex flex-col gap-4">
         <h3 className="text-violet-700 leading-none font-medium">
           FAVORİLERİM
         </h3>
-        <div className="w-full flex justify-between items-end gap-4">
+        <div className="w-full flex flex-col sm:flex-row justify-between sm:items-end gap-4">
           <TagFilter />
-          <div className="w-full sm:w-1/3 self-end">
+          <div className="w-full sm:w-1/3">
             <SearchInput />
           </div>
         </div>
       </header>
+
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <ProductList userId={session.user.id} favoritesOnly={true} />
+        <ProductList
+          userId={session?.user.id}
+          favoritesOnly
+          canAddOrder={canAddOrder}
+        />
       </HydrationBoundary>
     </section>
   );

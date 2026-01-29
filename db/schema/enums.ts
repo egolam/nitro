@@ -8,3 +8,21 @@ export const genderEnum = pgEnum("gender", [
   "unisex",
   "unassigned",
 ]);
+
+export const saleStatusEnum = pgEnum("status_name", [
+  "open",
+  "partial",
+  "confirmed",
+  "payment",
+  "completed",
+]);
+
+export const productDemandStatusEnum = pgEnum("product_demand_status", [
+  "pending",
+  "valid",
+  "confirmed",
+  "payment",
+  "paid",
+  "packaged",
+  "shipped",
+]);

@@ -29,10 +29,10 @@ export function Navigation() {
             key={link.href}
             href={link.href}
             className={cn(
-              "text-sm transition-colors h-full flex items-center border-b",
+              "text-sm transition-colors h-full flex items-center",
               isActive
-                ? "border-violet-700 text-violet-700"
-                : "border-transparent text-muted-foreground hover:text-foreground",
+                ? "text-violet-700"
+                : "text-muted-foreground hover:text-foreground",
             )}
           >
             {link.label}

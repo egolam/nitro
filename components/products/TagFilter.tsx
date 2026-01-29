@@ -77,12 +77,12 @@ export function TagFilter() {
     <div className="flex items-center gap-3 w-full sm:w-auto">
       <div className="flex items-center gap-2 text-muted-foreground">
         <Filter className="w-4 h-4" />
-        <span className="text-sm font-medium">Filtrele:</span>
+        <span className="text-sm font-medium sr-only">Filtrele:</span>
       </div>
       <div className="flex gap-2 w-full">
         <Button
           variant="outline"
-          size="sm"
+          
           onClick={() => toggleTag("new")}
           className={cn(
             "transition-colors border-dashed hover:cursor-pointer rounded bg-background! flex-1",
@@ -104,7 +104,7 @@ export function TagFilter() {
         </Button>
         <Button
           variant="outline"
-          size="sm"
+          
           onClick={() => toggleTag("delux")}
           className={cn(
             "transition-colors border-dashed hover:cursor-pointer rounded bg-background! flex-1",
