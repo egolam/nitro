@@ -4,6 +4,8 @@ import { MobileNavbar } from "@/components/navbar/MobileNavbar";
 import { AppSidebar } from "@/components/sidebar/Sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 
+export const dynamic = "force-dynamic";
+
 export default function HomeLayout({
   children,
 }: Readonly<{
