@@ -46,10 +46,6 @@ COPY --from=builder /app/package.json ./
 # without muddying the standalone node_modules
 RUN npm install -g drizzle-kit@0.31.8 tsx
 
-# Copy and setup startup script
-COPY --chown=nextjs:nodejs migrate-and-start.sh ./
-RUN chmod +x migrate-and-start.sh
-
 USER nextjs
 
 EXPOSE 3000
