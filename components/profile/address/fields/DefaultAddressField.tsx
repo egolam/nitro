@@ -26,7 +26,7 @@ export function DefaultAddressField({
         control={form.control}
         render={({ field }) => (
           <FieldLabel
-            className="rounded bg-background"
+            className="rounded bg-background hover:cursor-pointer"
             htmlFor="defaultAddress"
           >
             <Field orientation="horizontal">

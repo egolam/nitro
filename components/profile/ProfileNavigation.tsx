@@ -10,11 +10,13 @@ import {
 import { FaClock } from "react-icons/fa6";
 import { MdFavorite } from "react-icons/md";
 import { LogoutButton } from "../auth/LogoutButton";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 const profileNav = [
   {
     id: 0,
-    href: "/profil",
+    href: "/profil/uyelik-bilgilerim",
     title: "ÜYELİK BİLGİLERİM",
     icon: <FaAddressCard />,
   },
@@ -46,17 +48,26 @@ const profileNav = [
 ];
 
 export function ProfileNavigation() {
+  const pathname = usePathname();
+
   return (
     <nav className="border rounded overflow-hidden bg-background">
       <h2 className="font-medium text-violet-700 leading-none p-4">PROFİL</h2>
-      <ul className="grid grid-cols-1 text-sm border-t">
+      <ul className="grid grid-cols-1 text-sm border-t p-2 gap-1">
         {profileNav.map((item) => (
           <li key={item.id}>
             <Link
               href={item.href}
-              className="flex items-center gap-4 h-9 px-4 text-muted-foreground hover:text-violet-700"
+              className={cn(
+                "flex items-center gap-4 h-9 px-4 rounded text-muted-foreground transition-colors",
+                {
+                  "bg-violet-700 text-muted": pathname.startsWith(item.href),
+                  "hover:bg-accent hover:text-accent-foreground":
+                    pathname !== item.href,
+                },
+              )}
             >
-              {item.icon}
+              {item.icon} 
               {item.title}
             </Link>
           </li>

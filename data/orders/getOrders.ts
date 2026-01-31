@@ -27,6 +27,7 @@ export const getOrders = cache(async (userId: string) => {
         image: products.image,
         minBuyGrams: products.minBuyGrams,
         minBuyThreshold: products.minBuyThreshold,
+        gender: products.gender,
       },
     })
     .from(productDemandsViewSQL)

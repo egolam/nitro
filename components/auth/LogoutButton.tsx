@@ -20,7 +20,7 @@ export function LogoutButton() {
     <button
       onClick={() => logout()}
       type="button"
-      className="flex items-center gap-4 h-9 px-4 text-destructive hover:underline hover:cursor-pointer"
+      className="w-full flex items-center gap-4 h-9 px-4 text-destructive hover:underline hover:cursor-pointer"
     >
       <ImExit />
       ÇIKIŞ YAP

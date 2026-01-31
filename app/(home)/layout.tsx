@@ -14,7 +14,7 @@ export default function HomeLayout({
       <SidebarProvider className="flex-col">
         <AppSidebar />
         <Header />
-        <main className="px-4 xl:px-0 flex-1 flex justify-center min-h-[calc(100vh-7.5rem)]">
+        <main className="px-4 xl:px-0 flex-1 flex justify-center min-h-[calc(100vh-7.75rem)]">
           {children}
         </main>
         <MobileNavbar />

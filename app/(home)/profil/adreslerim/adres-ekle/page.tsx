@@ -13,7 +13,7 @@ export default async function AddAddressPage() {
   }
 
   return (
-    <section className="flex flex-col gap-4">
+    <section className="flex flex-col gap-4 bg-background p-4 rounded border">
       <header className="flex justify-between">
         <h3 className="text-violet-700 leading-none font-medium">ADRES EKLE</h3>
       </header>

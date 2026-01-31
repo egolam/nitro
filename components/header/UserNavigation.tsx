@@ -30,10 +30,10 @@ export function UserNavigation() {
             key={link.href}
             href={link.href}
             className={cn(
-              "flex items-center justify-center gap-2 size-9 rounded text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground",
+              "flex items-center justify-center gap-2 size-9 rounded text-sm font-medium transition-colors ",
               isActive
                 ? "text-violet-700 bg-violet-50"
-                : "text-muted-foreground",
+                : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
               link.href !== "/favorilerim" && "hidden md:flex",
             )}
           >

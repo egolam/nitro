@@ -136,7 +136,6 @@ export function AddAddressForm({
         <Field className="w-24">
           <Button
             variant="default"
-            size="sm"
             type="submit"
             form="create-address-form"
             className="rounded bg-green-700 hover:bg-green-600 hover:cursor-pointer font-normal"

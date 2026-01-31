@@ -21,6 +21,7 @@ type Order = {
     image: string | null;
     minBuyGrams: number;
     minBuyThreshold: number;
+    gender: "male" | "female" | "unisex" | "unassigned" | null;
   };
 };
 
@@ -87,6 +88,15 @@ export function OrderList({
                     </h4>
                     <p className="text-xs text-muted-foreground">
                       {order.product.brand} - {order.product.perfume}
+                    </p>
+                    <p className="text-xs text-muted-foreground font-medium uppercase mt-1">
+                      {order.product.gender === "male"
+                        ? "Erkek"
+                        : order.product.gender === "female"
+                          ? "Kadın"
+                          : order.product.gender === "unisex"
+                            ? "Unisex"
+                            : "Belirtilmemiş"}
                     </p>
                   </div>
                 </div>

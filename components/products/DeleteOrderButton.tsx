@@ -34,7 +34,7 @@ export function DeleteOrderButton({ productId }: DeleteOrderButtonProps) {
   return (
     <Button
       size="icon"
-      className="size-9 rounded-xs bg-red-500 hover:bg-red-400 hover:cursor-pointer"
+      className="size-9 rounded-xs text-destructive bg-transparent hover:bg-destructive/10 hover:cursor-pointer"
       onClick={handleDelete}
       disabled={isPending}
     >
