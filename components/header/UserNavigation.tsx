@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 import { FaShoppingCart } from "react-icons/fa";
 
 const userLinks = [
-  { href: "/profil/favorilerim", label: "Favorilerim", icon: Heart },
+  { href: "/favorilerim", label: "Favorilerim", icon: Heart },
   { href: "/taleplerim", label: "Taleplerim", icon: FaShoppingCart },
   { href: "/profil", label: "Hesabım", icon: User },
 ];
@@ -34,7 +34,7 @@ export function UserNavigation() {
               isActive
                 ? "text-violet-700 bg-violet-50"
                 : "text-muted-foreground",
-              link.href !== "/profil/favorilerim" && "hidden md:flex",
+              link.href !== "/favorilerim" && "hidden md:flex",
             )}
           >
             <Icon className={cn("size-4 fill-current")} />
