@@ -13,7 +13,7 @@ const navItems = [
 
 export function MobileNavbar() {
   return (
-    <nav className="sm:hidden fixed bottom-3.5 w-full left-1/2 -translate-x-1/2 shadow-lg bg-background border z-50">
+    <nav className="md:hidden fixed bottom-3.5 w-full left-1/2 -translate-x-1/2 shadow-lg bg-background border z-50">
       <ul className="flex items-center justify-center h-14">
         {navItems.map((item) => (
           <li

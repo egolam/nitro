@@ -1,0 +1,70 @@
+"use client";
+
+import Link from "next/link";
+import {
+  FaAddressCard,
+  FaMapMarkerAlt,
+  FaShoppingCart,
+  FaComment,
+} from "react-icons/fa";
+import { FaClock } from "react-icons/fa6";
+import { MdFavorite } from "react-icons/md";
+import { LogoutButton } from "../auth/LogoutButton";
+
+const profileNav = [
+  {
+    id: 0,
+    href: "/profil",
+    title: "ÜYELİK BİLGİLERİM",
+    icon: <FaAddressCard />,
+  },
+  {
+    id: 1,
+    href: "/profil/adreslerim",
+    title: "ADRESLERİM",
+    icon: <FaMapMarkerAlt />,
+  },
+  { id: 2, href: "/taleplerim", title: "TALEPLERİM", icon: <FaShoppingCart /> },
+  {
+    id: 5,
+    href: "/profil/gecmis-siparislerim",
+    title: "GEÇMİŞ SİPARİŞLERİM",
+    icon: <FaClock />,
+  },
+  {
+    id: 3,
+    href: "/favorilerim",
+    title: "FAVORİLERİM",
+    icon: <MdFavorite />,
+  },
+  {
+    id: 4,
+    href: "/profil/yorumlarim",
+    title: "YORUMLARIM",
+    icon: <FaComment />,
+  },
+];
+
+export function ProfileNavigation() {
+  return (
+    <nav className="border rounded overflow-hidden bg-background">
+      <h2 className="font-medium text-violet-700 leading-none p-4">PROFİL</h2>
+      <ul className="grid grid-cols-1 text-sm border-t">
+        {profileNav.map((item) => (
+          <li key={item.id}>
+            <Link
+              href={item.href}
+              className="flex items-center gap-4 h-9 px-4 text-muted-foreground hover:text-violet-700"
+            >
+              {item.icon}
+              {item.title}
+            </Link>
+          </li>
+        ))}
+        <li>
+          <LogoutButton />
+        </li>
+      </ul>
+    </nav>
+  );
+}

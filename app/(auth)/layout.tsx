@@ -8,7 +8,7 @@ export default function AuthLayout({
   return (
     <main className="flex flex-1">
       <section className="border-l-4 md:w-1/2 border-violet-700 w-full flex flex-col items-center justify-between">
-        <header className="flex items-center justify-end gap-2 w-full p-4">
+        <header className="flex items-center justify-end gap-2 w-full h-16 px-4">
           <GoBackBTN />
         </header>
         {children}

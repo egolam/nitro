@@ -26,12 +26,12 @@ export default async function OrdersPage() {
   const canDelete = status === "open" || status === "partial";
 
   return (
-    <section className="max-w-7xl flex-1 pt-4 flex flex-col gap-4 w-full">
+    <section className="max-w-5xl flex-1 pt-4 flex flex-col gap-4 w-full">
       <header className="flex flex-col gap-4">
         <h3 className="text-violet-700 leading-none font-medium">TALEPLERİM</h3>
         <div className="w-full flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4">
           {/* <TagFilter /> */}
-          <div className="w-full sm:w-1/4">
+          <div className="w-full sm:w-1/5">
             <SearchInput />
           </div>
           <StatusTabs />

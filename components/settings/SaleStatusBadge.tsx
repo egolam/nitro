@@ -58,7 +58,7 @@ export async function SaleStatusBadge() {
   return (
     <div
       className={cn(
-        "w-full flex items-center justify-between sm:justify-center sm:gap-2 h-8 px-4",
+        "w-full flex items-center justify-between sm:justify-center sm:gap-2 h-9 px-4",
         config.bg,
         config.text,
       )}

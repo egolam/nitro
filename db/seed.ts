@@ -73,26 +73,6 @@ console.log("🌱 Seeding products...");
 const createdProducts: string[] = [];
 
 async function main() {
-  console.log("🧹 Clearing database...");
-  await db.delete(productTags);
-  await db.delete(productCertificates);
-  await db.delete(productManufacturers);
-  await db.delete(favourites);
-  await db.delete(productPrices);
-  await db.delete(productFills);
-  await db.delete(productStorage);
-  await db.delete(accounts);
-  await db.delete(sessions);
-  await db.delete(userAddresses);
-
-  await db.delete(products);
-  await db.delete(users);
-
-  await db.delete(tags);
-  await db.delete(certificates);
-  await db.delete(manufacturers);
-  await db.delete(verifications);
-  console.log("✅ Database cleared");
 
   // 🏷️ Seed Tags
   const tagIds: Record<string, number> = {};

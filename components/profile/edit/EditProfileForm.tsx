@@ -71,7 +71,7 @@ export function EditProfileForm({ name }: { name: string | undefined }) {
   }
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 p-4">
       <form
         id="edit-form"
         onSubmit={form.handleSubmit(onSubmit)}
@@ -131,7 +131,6 @@ export function EditProfileForm({ name }: { name: string | undefined }) {
         {!isEditing ? (
           <Button
             type="button"
-            size="sm"
             onClick={() => setIsEditing(true)}
             className="w-24 rounded bg-violet-700 font-normal hover:bg-violet-600 hover:cursor-pointer"
           >
@@ -142,7 +141,6 @@ export function EditProfileForm({ name }: { name: string | undefined }) {
             <Field className="w-24">
               <Button
                 variant="default"
-                size="sm"
                 type="submit"
                 form="edit-form"
                 className="rounded bg-green-700 font-normal hover:bg-green-600 hover:cursor-pointer"
@@ -161,7 +159,6 @@ export function EditProfileForm({ name }: { name: string | undefined }) {
             </Field>
             <Button
               type="button"
-              size="sm"
               onClick={() => {
                 form.reset();
                 setIsEditing(false);

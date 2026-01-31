@@ -9,11 +9,10 @@ export const GoBackBTN = () => {
   return (
     <Button
       variant="link"
-      size="icon-sm"
       onClick={() => router.back()}
-      className="text-violet-700"
+      className="text-violet-700 hover:cursor-pointer size-9"
     >
-      <ArrowLeft className="size-4.5"/>
+      <ArrowLeft/>
       <p className="sr-only">Geri Dön</p>
     </Button>
   );

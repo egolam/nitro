@@ -6,9 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { formatPrice } from "@/helper/formatPrice";
+import { Badge } from "@/components/ui/badge";  
 import { FavoriteButton } from "@/components/products/FavoriteButton";
 import { ProductWithMeta } from "@/data/products/getProducts";
 import Link from "next/link";
@@ -95,7 +93,7 @@ export function ProductCard({
             />
           </div>
         </CardContent>
-        <CardFooter className="gap-2 p-0 mt-4">
+        <CardFooter className="gap-2 p-0 mt-2">
           <AddOrderButton
             productId={product.id}
             minBuyGrams={product.minBuyGrams}

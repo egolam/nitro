@@ -17,7 +17,7 @@ export function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
           <div className="flex flex-col gap-2">
             <h2 className="leading-none text-2xl">MARESANS</h2>
-            <p className="text-sm text-balance font-light opacity-75">
+            <p className="text-sm text-balance font-light">
               4000&apos;den fazla parfüm ve oda kokusu esansını tek tıkla talep
               edebilirsiniz. Grup alımıyla top ve delux kalite esanslara uygun
               fiyatlarla ulaşın.
@@ -68,34 +68,34 @@ export function Footer() {
                 <li>
                   <Link
                     href="/"
-                    className="h-8 flex items-center font-light pl-4 opacity-75 transition-colors hover:opacity-100"
+                    className="h-8 flex items-center font-light transition-colors"
                   >
-                    TÜMÜ
+                    Tümü
                   </Link>
                 </li>
                 <li>
                   <Link
                     href="/"
-                    className="h-8 flex items-center font-light pl-4 opacity-75 transition-colors hover:opacity-100"
+                    className="h-8 flex items-center font-light transition-colors"
                   >
                     {" "}
-                    ERKEK
+                    Erkek
                   </Link>
                 </li>
                 <li>
                   <Link
                     href="/"
-                    className="h-8 flex items-center font-light pl-4 opacity-75 transition-colors hover:opacity-100"
+                    className="h-8 flex items-center font-light transition-colors"
                   >
-                    KADIN
+                    Kadın
                   </Link>
                 </li>
                 <li>
                   <Link
                     href="/"
-                    className="h-8 flex items-center font-light pl-4 opacity-75 transition-colors hover:opacity-100"
+                    className="h-8 flex items-center font-light transition-colors"
                   >
-                    UNISEX
+                    Unisex
                   </Link>
                 </li>
               </ul>
@@ -108,15 +108,15 @@ export function Footer() {
                 <li>
                   <Link
                     href="/"
-                    className="h-8 flex items-center font-light pl-4 opacity-75 transition-colors hover:opacity-100"
+                    className="h-8 flex items-center font-light transition-colors"
                   >
-                    ANA SAYFA
+                    Ana Sayfa
                   </Link>
                 </li>
                 <li>
                   <Link
                     href="/"
-                    className="h-8 flex items-center font-light pl-4 opacity-75 transition-colors hover:opacity-100"
+                    className="h-8 flex items-center font-light transition-colors"
                   >
                     {" "}
                     S.S.S.
@@ -125,9 +125,9 @@ export function Footer() {
                 <li>
                   <Link
                     href="/"
-                    className="h-8 flex items-center font-light pl-4 opacity-75 transition-colors hover:opacity-100"
+                    className="h-8 flex items-center font-light transition-colors"
                   >
-                    HAKKIMIZDA
+                    Hakkımızda
                   </Link>
                 </li>
               </ul>
@@ -140,42 +140,41 @@ export function Footer() {
                 <li>
                   <Link
                     href="/"
-                    className="h-8 flex items-center font-light pl-4 opacity-75 transition-colors hover:opacity-100"
+                    className="h-8 flex items-center font-light transition-colors"
                   >
-                    ÖN BİLGİLENDİRME FORMU
+                    Ön Bilgilendirme Formu
                   </Link>
                 </li>
                 <li>
                   <Link
                     href="/"
-                    className="h-8 flex items-center font-light pl-4 opacity-75 transition-colors hover:opacity-100"
+                    className="h-8 flex items-center font-light transition-colors"
                   >
-                    {" "}
-                    MESAFELİ SATIŞ SÖZLEŞMESİ
+                    Mesafeli Satış Sözleşmesi
                   </Link>
                 </li>
                 <li>
                   <Link
                     href="/"
-                    className="h-8 flex items-center font-light pl-4 opacity-75 transition-colors hover:opacity-100"
+                    className="h-8 flex items-center font-light transition-colors"
                   >
-                    TESLİMAT-İADE POLİTİKASI
+                    Teslimat-Iade Politikası
                   </Link>
                 </li>
                 <li>
                   <Link
                     href="/"
-                    className="h-8 flex items-center font-light pl-4 opacity-75 transition-colors hover:opacity-100"
+                    className="h-8 flex items-center font-light transition-colors"
                   >
-                    GİZLİLİK VE GÜVENLİK POLİTİKASI
+                    Gizlilik ve Güvenlik Politikası
                   </Link>
                 </li>
                 <li>
                   <Link
                     href="/"
-                    className="h-8 flex items-center font-light pl-4 opacity-75 transition-colors hover:opacity-100"
+                    className="h-8 flex items-center font-light transition-colors"
                   >
-                    KVKK AYDINLATMA METNİ
+                    KVKK Aydınlatma Metni
                   </Link>
                 </li>
               </ul>
@@ -185,17 +184,17 @@ export function Footer() {
             <h3>İLETİŞİM</h3>
 
             <ul className="flex flex-col font-light">
-              <li className="pl-4 opacity-75 flex leading-none gap-2 h-8 items-center">
+              <li className="flex leading-none gap-2 h-8 items-center">
                 <FaEnvelope /> info@maresans.com
               </li>
-              <li className="pl-4 opacity-75 flex leading-none gap-2 h-8 items-center">
+              <li className="flex leading-none gap-2 h-8 items-center">
                 <FaPhone /> 0850 346 56 25
               </li>
-              <li className="pl-4 opacity-75 flex leading-none gap-2 h-8 items-center">
+              <li className="flex leading-none gap-2 h-8 items-center">
                 <FaAddressCard />
                 2590388751
               </li>
-              <li className="pl-4 opacity-75 flex leading-none gap-2 h-8 mt-2">
+              <li className="flex leading-none gap-2 h-8 mt-2">
                 <FaMapMarkerAlt /> Kazım Dirik Mah. 296/2 Sok. No: 33, 35100,
                 Bornova/İZMİR
               </li>
@@ -203,7 +202,7 @@ export function Footer() {
           </div>
         </div>
         <div className="border-t border-violet-500 pt-3 mt-4 sm:pb-3">
-          <p className="text-xs opacity-75 text-center">
+          <p className="text-xs text-center">
             © 2026 Maresans. Tüm Hakları Saklıdır.
           </p>
         </div>

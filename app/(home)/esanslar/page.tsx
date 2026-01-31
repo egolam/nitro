@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function EsanslarPage() {
   return (
-    <section className="flex flex-col gap-4 max-w-7xl flex-1 pt-4">
+    <section className="flex flex-col gap-4 max-w-5xl flex-1 pt-4">
       <header className="flex justify-between items-center">
         <h3 className="text-violet-700 leading-none font-medium">ESANSLAR</h3>
       </header>

@@ -30,7 +30,7 @@ export function UserNavigation() {
             key={link.href}
             href={link.href}
             className={cn(
-              "flex items-center gap-2 px-2 py-2 rounded text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground",
+              "flex items-center justify-center gap-2 size-9 rounded text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground",
               isActive
                 ? "text-violet-700 bg-violet-50"
                 : "text-muted-foreground",
@@ -38,7 +38,7 @@ export function UserNavigation() {
             )}
           >
             <Icon className={cn("size-4 fill-current")} />
-            <span className="hidden md:inline">{link.label}</span>
+            <span className="hidden">{link.label}</span>
           </Link>
         );
       })}

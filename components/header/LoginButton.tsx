@@ -13,7 +13,7 @@ export function LoginButton() {
   return (
     <Link
       href="/giris-yap"
-      className="flex items-center font-normal text-sm justify-center rounded h-8 text-muted bg-violet-700 px-4 hover:bg-violet-600 transition-colors"
+      className="flex items-center font-normal text-sm justify-center rounded h-9 text-muted bg-violet-700 px-4 hover:bg-violet-600 transition-colors"
     >
       <span className="">GİRİŞ YAP</span>
       {/* <LuLogIn size={20} /> */}

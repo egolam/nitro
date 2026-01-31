@@ -4,8 +4,6 @@ import { MobileNavbar } from "@/components/navbar/MobileNavbar";
 import { AppSidebar } from "@/components/sidebar/Sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 
-export const dynamic = "force-dynamic";
-
 export default function HomeLayout({
   children,
 }: Readonly<{
@@ -16,7 +14,7 @@ export default function HomeLayout({
       <SidebarProvider className="flex-col">
         <AppSidebar />
         <Header />
-        <main className="px-4 xl:px-0 flex-1 flex min-h-screen justify-center">
+        <main className="px-4 xl:px-0 flex-1 flex justify-center min-h-[calc(100vh-7.5rem)]">
           {children}
         </main>
         <MobileNavbar />

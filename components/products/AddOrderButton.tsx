@@ -85,7 +85,7 @@ export function AddOrderButton({
       <Button
         onClick={handleStart}
         disabled={disabled}
-        className="flex-1 h-8 bg-violet-700 hover:cursor-pointer hover:bg-violet-600 rounded font-normal text-white"
+        className="flex-1 bg-violet-700 hover:cursor-pointer hover:bg-violet-600 rounded font-normal text-white"
       >
         TALEP EKLE
       </Button>
@@ -93,20 +93,20 @@ export function AddOrderButton({
   }
 
   return (
-    <div className="flex-1 flex gap-2 h-8">
-      <div className="flex items-center flex-1 bg-violet-50 rounded border border-violet-200 justify-between px-1">
+    <div className="flex-1 flex gap-2 h-9">
+      <div className="flex items-center flex-1 bg-violet-50 rounded border border-violet-200 justify-between overflow-hidden">
         <button
           onClick={handleDecrement}
           disabled={isPending}
-          className="p-1 hover:bg-violet-100 rounded text-violet-700 hover:cursor-pointer disabled:opacity-50"
+          className="h-full aspect-square flex items-center justify-center hover:bg-violet-100 rounded-l text-violet-700 hover:cursor-pointer disabled:opacity-50"
         >
           <Minus size={14} />
         </button>
-        <span className="text-xs font-medium text-violet-900">{quantity}g</span>
+        <span className="text-sm font-medium text-violet-900">{quantity}g</span>
         <button
           onClick={handleIncrement}
           disabled={isPending}
-          className="p-1 hover:bg-violet-100 rounded text-violet-700 hover:cursor-pointer disabled:opacity-50"
+          className="h-full aspect-square flex items-center justify-center hover:bg-violet-100 rounded-l text-violet-700 hover:cursor-pointer disabled:opacity-50"
         >
           <Plus size={14} />
         </button>
@@ -114,7 +114,7 @@ export function AddOrderButton({
       <Button
         onClick={handleConfirm}
         disabled={isPending}
-        className="w-12 h-8 bg-green-600 hover:bg-green-500 rounded text-white p-0 disabled:opacity-70"
+        className="size-9 bg-green-600 hover:bg-green-500 rounded text-white p-0 disabled:opacity-70"
       >
         <Check size={16} />
       </Button>

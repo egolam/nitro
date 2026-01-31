@@ -16,6 +16,7 @@ export default async function SettingsPage() {
     vat: 0.2, // 20%
     profitMargin: 0.2, // 20%
     exchangeRate: 43.58,
+    shippingPrice: 120,
     saleStatusId: allStatuses.find((s) => s.name === "open")?.id ?? null,
   };
 
