@@ -3,26 +3,10 @@ import { SearchInput } from "@/components/products/SearchInput";
 import { TagFilter } from "@/components/products/TagFilter";
 import { auth } from "@/auth";
 import { headers } from "next/headers";
-import {
-  HydrationBoundary,
-  QueryClient,
-  dehydrate,
-} from "@tanstack/react-query";
-import { getProductsAction } from "@/actions/shop/products/getProductsAction";
+
 import { getSettings } from "@/data/settings/getSettings";
 
-
-
-export default async function KadinPage() {
-  const queryClient = new QueryClient();
-
-  await queryClient.prefetchInfiniteQuery({
-    queryKey: ["products", "female"],
-    queryFn: ({ pageParam }) =>
-      getProductsAction(pageParam as number | null, "female"),
-    initialPageParam: 0,
-  });
-
+export default async function FemalePage() {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -43,9 +27,7 @@ export default async function KadinPage() {
           </div>
         </div>
       </header>
-      <HydrationBoundary state={dehydrate(queryClient)}>
-        <ProductList userId={session?.user.id} canAddOrder={canAddOrder} />
-      </HydrationBoundary>
+      <ProductList userId={session?.user.id} canAddOrder={canAddOrder} />
     </section>
   );
 }

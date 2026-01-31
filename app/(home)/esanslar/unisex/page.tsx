@@ -3,24 +3,10 @@ import { SearchInput } from "@/components/products/SearchInput";
 import { TagFilter } from "@/components/products/TagFilter";
 import { auth } from "@/auth";
 import { headers } from "next/headers";
-import {
-  HydrationBoundary,
-  QueryClient,
-  dehydrate,
-} from "@tanstack/react-query";
-import { getProductsAction } from "@/actions/shop/products/getProductsAction";
+
 import { getSettings } from "@/data/settings/getSettings";
 
 export default async function UnisexPage() {
-  const queryClient = new QueryClient();
-
-  await queryClient.prefetchInfiniteQuery({
-    queryKey: ["products", "unisex"],
-    queryFn: ({ pageParam }) =>
-      getProductsAction(pageParam as number | null, "unisex"),
-    initialPageParam: 0,
-  });
-
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -41,9 +27,7 @@ export default async function UnisexPage() {
           </div>
         </div>
       </header>
-      <HydrationBoundary state={dehydrate(queryClient)}>
-        <ProductList userId={session?.user.id} canAddOrder={canAddOrder} />
-      </HydrationBoundary>
+      <ProductList userId={session?.user.id} canAddOrder={canAddOrder} />
     </section>
   );
 }

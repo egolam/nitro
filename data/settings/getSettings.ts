@@ -1,10 +1,15 @@
 import { db } from "@/db";
 
 export async function getSettings() {
-  const result = await db.query.settings.findFirst({
-    with: {
-      saleStatus: true,
-    },
-  });
-  return result;
+  try {
+    const result = await db.query.settings.findFirst({
+      with: {
+        saleStatus: true,
+      },
+    });
+    return result;
+  } catch (error) {
+    console.error("Failed to fetch settings:", error);
+    return null;
+  }
 }

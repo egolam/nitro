@@ -1,16 +1,9 @@
-import { getProductsAction } from "@/actions/shop/products/getProductsAction";
 import { ProductList } from "@/components/products/ProductList";
 import { SearchInput } from "@/components/products/SearchInput";
 import { TagFilter } from "@/components/products/TagFilter";
 import { auth } from "@/auth";
-import {
-  HydrationBoundary,
-  QueryClient,
-  dehydrate,
-} from "@tanstack/react-query";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-
 import { getSettings } from "@/data/settings/getSettings";
 
 export const metadata = {
@@ -18,16 +11,6 @@ export const metadata = {
 };
 
 export default async function FavoritesPage() {
-  const queryClient = new QueryClient();
-
-  // Prefetch first page
-  await queryClient.prefetchInfiniteQuery({
-    queryKey: ["products", null, { favoritesOnly: true }], // Match key in ProductList
-    queryFn: ({ pageParam }) =>
-      getProductsAction(pageParam as number | null, null, true),
-    initialPageParam: 0,
-  });
-
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -53,13 +36,11 @@ export default async function FavoritesPage() {
         </div>
       </header>
 
-      <HydrationBoundary state={dehydrate(queryClient)}>
-        <ProductList
-          userId={session?.user.id}
-          favoritesOnly
-          canAddOrder={canAddOrder}
-        />
-      </HydrationBoundary>
+      <ProductList
+        userId={session?.user.id}
+        favoritesOnly
+        canAddOrder={canAddOrder}
+      />
     </section>
   );
 }
