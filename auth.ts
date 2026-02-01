@@ -12,6 +12,7 @@ export const auth = betterAuth({
     usePlural: true,
   }),
   session: {
+    expiresIn: 60 * 60 * 24 * 90,
     cookieCache: {
       enabled: true,
       maxAge: 5 * 60,
@@ -21,6 +22,7 @@ export const auth = betterAuth({
       },
     },
   },
+
   rateLimit: {
     enabled: true,
     window: 60,
@@ -50,7 +52,7 @@ export const auth = betterAuth({
       defaultLocale: "tr-TR",
       fallbackLocale: "default",
     }),
-    admin(),
+    admin({}),
     phoneNumber(),
     emailOTP({
       overrideDefaultEmailVerification: true,

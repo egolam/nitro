@@ -98,7 +98,7 @@ export function ProductList({
         <p className="text-lg font-medium text-muted-foreground">
           Aradığınız kriterlere uygun ürün bulunamadı.
         </p>
-        <p className="text-sm text-muted-foreground/80 mt-1">
+        <p className="text-muted-foreground/80 mt-1">
           Farklı bir arama terimi veya filtre deneyebilirsiniz.
         </p>
       </div>
@@ -106,7 +106,7 @@ export function ProductList({
   }
 
   return (
-    <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {products.map((product) => (
         <li key={product.id} className="">
           <ProductCard

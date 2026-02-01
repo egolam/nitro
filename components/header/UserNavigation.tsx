@@ -22,7 +22,7 @@ export function UserNavigation() {
   return (
     <nav className=" items-center gap-1 flex">
       {userLinks.map((link) => {
-        const isActive = pathname === link.href;
+        const isActive = pathname.startsWith(link.href);
         const Icon = link.icon;
 
         return (

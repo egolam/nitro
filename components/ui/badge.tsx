@@ -9,7 +9,7 @@ const badgeVariants = cva(
   {
     variants: {
       variant: {
-        delux: "bg-yellow-400",
+        delux: "bg-yellow-500",
         top: "bg-background",
         new: "bg-green-700",
         featured: "bg-red-700",

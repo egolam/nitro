@@ -92,7 +92,7 @@ export function LoginForm() {
                     id="magic"
                     aria-invalid={fieldState.invalid}
                     placeholder="merhaba@marsans.com"
-                    autoComplete="off"
+                    autoComplete="on"
                     className="text-sm bg-background rounded"
                   />
                   {fieldState.invalid && (

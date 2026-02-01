@@ -1,17 +1,13 @@
 import {
   Calculator,
-  Calendar,
   CircleQuestionMark,
-  Grid,
   Grid2X2,
-  Home,
-  Inbox,
   Mars,
-  Search,
   Settings,
   Venus,
   VenusAndMars,
 } from "lucide-react";
+import { GiDelicatePerfume } from "react-icons/gi";
 
 import {
   Sidebar,
@@ -56,6 +52,11 @@ const tools = [
     title: "PARFÜM HESAPLAMA ARACI",
     url: "https://formulasyon.com",
     icon: Calculator,
+  },
+  {
+    title: "FİXESANS",
+    url: "https://fixesans.com",
+    icon: GiDelicatePerfume,
   },
   {
     title: "S.S.S.",
