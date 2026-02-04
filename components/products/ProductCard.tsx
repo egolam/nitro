@@ -12,6 +12,7 @@ import { ProductWithMeta } from "@/data/products/getProducts";
 import Link from "next/link";
 import { AddOrderButton } from "./AddOrderButton";
 import { ProgressBar } from "./ProgressBar";
+import { Mars, Venus, VenusAndMars } from "lucide-react";
 
 type ProductCardProps = {
   product: ProductWithMeta;
@@ -46,15 +47,20 @@ export function ProductCard({
               href={`/esanslar/${product.gender === "male" ? "erkek" : product.gender === "female" ? "kadın" : "unisex"}/${product.slug}`}
               className="hover:text-violet-700 transition-colors w-48"
             >
-              <h3 className="truncate">
-                {product.factoryName} asdsadsadpsoadkpsoadkpsoadkpoasdk
-              </h3>
+              <h3 className="truncate">{product.factoryName}</h3>
             </Link>
 
             <Badge
-              className="px-2 py-1 rounded-xs uppercase leading-none text-muted"
+              className="rounded-xs uppercase leading-none text-muted h-6 px-2 [&>svg]:size-4"
               variant={product.gender}
             >
+              {product.gender === "male" ? (
+                <Mars />
+              ) : product.gender === "female" ? (
+                <Venus />
+              ) : (
+                <VenusAndMars />
+              )}
               {product.gender === "male"
                 ? "Erkek"
                 : product.gender === "female"
@@ -65,21 +71,19 @@ export function ProductCard({
           <CardDescription className="flex flex-col m-0 w-62">
             <span className="text-xs text-muted-foreground">Benzer Ürün:</span>
             <h4 className="leading-none text-sm font-medium truncate">
-              {product.brand + " " + product.perfume} opasdpasodkpoasdkpasodkpsoadkposakdposakodpas
+              {product.brand + " " + product.perfume}
             </h4>
           </CardDescription>
         </CardHeader>
         <CardContent className="p-0 mt-4">
           <div className="flex flex-col gap-2">
             <p className="text-end leading-none font-medium">
-              {
-                product.price?.minBuyPrice
-                  ? product.price.minBuyPrice.toLocaleString("tr-TR", {
-                      style: "currency",
-                      currency: "TRY",
-                    })
-                  : "Fiyat Sorunuz" // Fallback if calculation fails or no price
-              }{" "}
+              {product.price?.minBuyPrice
+                ? product.price.minBuyPrice.toLocaleString("tr-TR", {
+                    style: "currency",
+                    currency: "TRY",
+                  })
+                : "Fiyat Sorunuz"}{" "}
               <span className="text-muted-foreground text-xs">
                 /{product.minBuyGrams}gr
               </span>

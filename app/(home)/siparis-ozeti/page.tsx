@@ -5,6 +5,8 @@ import { getPaymentOrders } from "@/data/orders/getPaymentOrders";
 import Image from "next/image";
 import { formatPrice } from "@/helper/formatPrice";
 import Link from "next/link";
+import { getUserAddress } from "@/data/users/getUserAddress";
+import { AddressItem } from "@/components/profile/address/AddressItem";
 
 export const metadata = {
   title: "Sipariş Özeti | MARESANS",
@@ -20,6 +22,7 @@ export default async function OrderSummaryPage() {
   }
 
   const { orders, shippingPrice } = await getPaymentOrders(session.user.id);
+  const userAddress = await getUserAddress(session.user.id);
 
   if (orders.length === 0) {
     redirect("/");
@@ -39,52 +42,95 @@ export default async function OrderSummaryPage() {
         </p>
       </header>
       <div className="flex flex-col md:flex-row gap-4 w-full">
-        <ul className="bg-background rounded border flex flex-col divide-y px-4 w-full md:w-2/3">
-          {orders.map((order) => (
-            <li key={order.id} className="py-4 flex gap-4">
-              <div className="relative size-16 rounded-xs overflow-hidden">
-                <Image
-                  src={order.product.image!}
-                  fill
-                  alt={order.product.factoryName}
-                />
-              </div>
-              <div className="text-sm flex flex-col justify-between flex-1">
-                <div>
-                  <p className="font-medium">{order.product.factoryName}</p>
-                  <div className="text-xs text-muted-foreground">
-                    <p>
-                      {order.product.brand} {order.product.perfume}
+        <div className="flex flex-col gap-4 w-full md:w-2/3">
+          <ul className="bg-background rounded border flex flex-col divide-y px-4 h-fit">
+            {orders.map((order) => (
+              <li key={order.id} className="py-4 flex gap-4">
+                <div className="relative size-16 rounded-xs overflow-hidden">
+                  <Image
+                    src={order.product.image!}
+                    fill
+                    alt={order.product.factoryName}
+                  />
+                </div>
+                <div className="text-sm flex flex-col justify-between flex-1">
+                  <div>
+                    <p className="font-medium">{order.product.factoryName}</p>
+                    <div className="text-xs text-muted-foreground">
+                      <p>
+                        {order.product.brand} {order.product.perfume}
+                      </p>
+                      <p className="font-medium">
+                        {order.product.gender === "male"
+                          ? "Erkek"
+                          : order.product.gender === "female"
+                            ? "Kadın"
+                            : "Unisex"}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="text-xs text-muted-foreground">
+                      {order.amount} gr
                     </p>
-                    <p className="font-medium">
-                      {order.product.gender === "male"
-                        ? "Erkek"
-                        : order.product.gender === "female"
-                          ? "Kadın"
-                          : "Unisex"}
+
+                    <p>{formatPrice(order.totalPrice)}</p>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+          {userAddress && (
+            <div className="flex gap-2 items-center text-sm">
+              <div>
+                <h4 className="text-sm text-muted-foreground truncate">
+                  Teslimat Adresi
+                </h4>
+                <div className="pl-2">
+                  <p className="truncate pt-1">{userAddress.addressLine}</p>
+                  <div className="flex gap-2">
+                    <p className="capitalize truncate">
+                      {userAddress.district}
+                    </p>
+                    <span>/</span>
+                    <p className=" truncate">
+                      {userAddress.province.toLocaleUpperCase()}
                     </p>
                   </div>
                 </div>
-                <div className="flex items-center justify-between gap-2">
-                  <p className="text-xs text-muted-foreground">
-                    {order.amount} gr
-                  </p>
-
-                  <p>{formatPrice(order.totalPrice)}</p>
+              </div>
+              <div>
+                <h4 className="text-sm text-muted-foreground truncate">
+                  Fatura Adresi
+                </h4>
+                <div className="pl-2">
+                  <p className="truncate pt-1">{userAddress.addressLine}</p>
+                  <div className="flex gap-2">
+                    <p className="capitalize truncate">
+                      {userAddress.district}
+                    </p>
+                    <span>/</span>
+                    <p className=" truncate">
+                      {userAddress.province.toLocaleUpperCase()}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </li>
-          ))}
-        </ul>
-        <div className="py-4 flex flex-col justify-between gap-2 bg-background p-4 rounded border flex-1">
+            </div>
+          )}
+        </div>
+
+        <div className="py-4 flex flex-col justify-between gap-2 bg-background p-4 rounded border flex-1 h-fit">
           <div className="flex flex-col gap-2">
             <div className="flex justify-between items-center text-sm text-muted-foreground">
               <span>Ara Toplam</span>
-              <span className="font-medium">{formatPrice(totalPrice)}</span>
+              <span className="font-medium text-foreground">
+                {formatPrice(totalPrice)}
+              </span>
             </div>
             <div className="flex justify-between items-center text-sm text-muted-foreground">
               <span>Kargo</span>
-              <span className="font-medium">
+              <span className="font-medium text-foreground">
                 {shippingPrice > 0 ? formatPrice(shippingPrice) : "Ücretsiz"}
               </span>
             </div>
@@ -105,9 +151,9 @@ export default async function OrderSummaryPage() {
           </div>
           <Link
             href="/odeme"
-            className="bg-violet-700 text-white h-8 flex items-center justify-center rounded-xs hover:bg-violet-600 transition-colors"
+            className="bg-violet-700 text-sm text-white h-9 flex items-center justify-center rounded hover:bg-violet-600 transition-colors"
           >
-            Ödemeye Geç
+            SİPARİŞİ TAMAMLA
           </Link>
         </div>
       </div>

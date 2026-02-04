@@ -18,7 +18,7 @@ export async function getProductsAction(
 
   return getProducts(session?.user.id, {
     cursor,
-    limit: 8,
+    limit: 6,
     gender,
     favoritesOnly,
     search,

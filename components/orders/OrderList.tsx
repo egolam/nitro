@@ -70,7 +70,7 @@ export function OrderList({
               className="bg-background rounded overflow-hidden justify-between flex flex-col shadow-lg h-50 p-4"
             >
               <div className="flex gap-2 justify-between">
-                <div className="flex gap-4">
+                <div className="flex gap-4 flex-1">
                   <div className="relative w-20 h-20 bg-muted rounded-xs overflow-hidden shrink-0">
                     {order.product.image && (
                       <Image
@@ -82,9 +82,9 @@ export function OrderList({
                       />
                     )}
                   </div>
-                  <div>
+                  <div className="flex-1">
                     <h4 className="font-semibold text-sm line-clamp-1">
-                      {order.product.factoryName}
+                      {order.product.factoryName} 
                     </h4>
                     <p className="text-xs text-muted-foreground">
                       {order.product.brand} - {order.product.perfume}

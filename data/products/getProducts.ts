@@ -46,7 +46,7 @@ export async function getProducts(
     tags?: string[];
   },
 ): Promise<{ data: ProductWithMeta[]; nextCursor: number | null }> {
-  const limit = options?.limit ?? 8;
+  const limit = options?.limit ?? 6;
   const cursor = options?.cursor ?? 0;
   const gender = options?.gender;
   const favoritesOnly = options?.favoritesOnly;
