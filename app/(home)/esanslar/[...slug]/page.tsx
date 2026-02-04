@@ -75,7 +75,7 @@ export default async function ProductDetailPage({
             </span>
           </p>
         </div>
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-4">
           <h3 className="text-sm text-violet-700 font-medium leading-none">
             Ürün detayları:
           </h3>

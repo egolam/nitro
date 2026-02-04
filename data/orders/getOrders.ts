@@ -1,7 +1,14 @@
 import { db } from "@/db";
-import { productDemandsViewSQL, products } from "@/db/schema";
+import {
+  productDemandsViewSQL,
+  products,
+  settings as settingsSchema,
+  productPrices,
+} from "@/db/schema";
 import { eq, desc, sql } from "drizzle-orm";
 import { cache } from "react";
+import { getExchangeRate } from "@/lib/exchange-rate";
+import { calculateProductPricePerGram, roundPrice } from "@/lib/pricing";
 
 export const getOrders = cache(async (userId: string) => {
   const data = await db
@@ -36,5 +43,38 @@ export const getOrders = cache(async (userId: string) => {
     .groupBy(products.id)
     .orderBy(desc(sql`max(${productDemandsViewSQL.createdAt})`));
 
-  return data;
+  // Fetch settings and exchange rate
+  const [appSettings] = await db.select().from(settingsSchema).limit(1);
+  const exchangeRate = await getExchangeRate();
+
+  const enhancedData = await Promise.all(
+    data.map(async (item) => {
+      // Fetch product price (base cost)
+      const [priceRow] = await db
+        .select()
+        .from(productPrices)
+        .where(eq(productPrices.productId, item.id));
+
+      let pricePerGram = 0;
+
+      if (priceRow && appSettings) {
+        pricePerGram = calculateProductPricePerGram(
+          priceRow.amountCents,
+          {
+            vat: appSettings.vat,
+            profitMargin: appSettings.profitMargin,
+            discount: appSettings.discount,
+          },
+          exchangeRate,
+        );
+      }
+
+      return {
+        ...item,
+        pricePerGram: roundPrice(pricePerGram),
+      };
+    }),
+  );
+
+  return enhancedData;
 });

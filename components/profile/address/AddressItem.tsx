@@ -7,7 +7,7 @@ export function AddressItem({ item }: { item: UserAddress }) {
     <div
       key={item.id}
       className={cn(
-        "text-sm border rounded p-2 bg-background flex flex-col gap-2",
+        "text-sm border border-dashed rounded p-2 bg-background flex flex-col gap-2",
       )}
     >
       <div>
@@ -24,7 +24,7 @@ export function AddressItem({ item }: { item: UserAddress }) {
         <div className="pl-2">
           <p className="truncate pt-1">{item.addressLine}</p>
           <div className="flex gap-2">
-            <p className="capitalize truncate">{item.district}</p>
+            <p className="capitalize">{item.district}</p>
             <span>/</span>
             <p className=" truncate">{item.province.toLocaleUpperCase()}</p>
           </div>
@@ -41,7 +41,7 @@ export function AddressItem({ item }: { item: UserAddress }) {
           <div className="pl-2">
             <p className="truncate pt-1">{item.addressLine}</p>
             <div className="flex gap-2">
-              <p className="capitalize truncate">{item.district}</p>
+              <p className="capitalize">{item.district}</p>
               <span>/</span>
               <p className=" truncate">{item.province.toLocaleUpperCase()}</p>
             </div>
@@ -50,7 +50,7 @@ export function AddressItem({ item }: { item: UserAddress }) {
       ) : (
         <div>
           <div className="flex items-center justify-between">
-            <h4 className="text-xs text-muted-foreground truncate">
+            <h4 className="text-sm text-muted-foreground truncate">
               Fatura Adresi (
               {item.userType === "individual" ? "Bireysel" : "Kurumsal"})
             </h4>
@@ -58,7 +58,7 @@ export function AddressItem({ item }: { item: UserAddress }) {
           <div className="pl-2">
             <p className="truncate pt-1">{item.addressLineBill}</p>
             <div className="flex gap-2">
-              <p className="capitalize truncate">{item.districtBill}</p>
+              <p className="capitalize">{item.districtBill}</p>
               <span>/</span>
               <p className=" truncate">
                 {item.provinceBill.toLocaleUpperCase()}

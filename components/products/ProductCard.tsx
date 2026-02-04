@@ -42,10 +42,10 @@ export function ProductCard({
       </div>
       <div className="p-4 flex-1 flex flex-col justify-between">
         <CardHeader className="gap-2 p-0">
-          <CardTitle className="text-sm font-semibold capitalize flex items-center justify-between ">
+          <CardTitle className="text-sm font-semibold capitalize flex items-center justify-between">
             <Link
               href={`/esanslar/${product.gender === "male" ? "erkek" : product.gender === "female" ? "kadın" : "unisex"}/${product.slug}`}
-              className="hover:text-violet-700 transition-colors w-48"
+              className="hover:text-violet-700 transition-colors w-41 sm:w-50"
             >
               <h3 className="truncate">{product.factoryName}</h3>
             </Link>
@@ -68,7 +68,7 @@ export function ProductCard({
                   : "Unisex"}
             </Badge>
           </CardTitle>
-          <CardDescription className="flex flex-col m-0 w-62">
+          <CardDescription className="flex flex-col m-0 w-63">
             <span className="text-xs text-muted-foreground">Benzer Ürün:</span>
             <h4 className="leading-none text-sm font-medium truncate">
               {product.brand + " " + product.perfume}

@@ -44,11 +44,11 @@ export default async function AddressesPage() {
           </p>
         </div>
       )}
-      <div className="flex flex-col gap-4 text-m">
+      <div className="text-sm grid grid-cols-1 sm:grid-cols-2 gap-4">
         {data.length > 0 ? (
           data.map((item) => <AddressItem item={item} key={item.id} />)
         ) : (
-          <div className="flex gap-2 text-sm rounded p-4 bg-destructive text-muted">
+          <div className="flex col-span-2 gap-2 text-sm rounded p-4 bg-destructive text-muted">
             <div>
               <TriangleAlert className="size-4" />
             </div>

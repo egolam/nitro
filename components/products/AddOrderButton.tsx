@@ -114,7 +114,7 @@ export function AddOrderButton({
       <Button
         onClick={handleConfirm}
         disabled={isPending}
-        className="size-9 bg-green-600 hover:bg-green-500 rounded text-white p-0 disabled:opacity-70"
+        className="size-9 bg-green-600 hover:bg-green-500 rounded text-white p-0 disabled:opacity-70 hover:cursor-pointer"
       >
         <Check size={16} />
       </Button>

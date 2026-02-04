@@ -33,7 +33,7 @@ export function ProgressBar({ current, total, threshold }: ProgressBarProps) {
         ></div>
       )}
       <p className="text-xs text-black leading-none absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 font-medium">
-        {current}/{total}gr
+        {current} / {total}gr
       </p>
     </div>
   );

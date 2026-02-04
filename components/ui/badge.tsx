@@ -17,8 +17,8 @@ const badgeVariants = cva(
         female: "bg-pink-700",
         unisex: "bg-neutral-700",
         unassigned: "bg-neutral-700",
-        valid: "bg-green-500",
-        pending: "bg-orange-500",
+        valid: "border-blue-500 bg-blue-500/20 text-blue-700",
+        pending: "border-yellow-500 bg-yellow-500/20 text-yellow-700",
       },
     },
     defaultVariants: {

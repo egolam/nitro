@@ -82,7 +82,7 @@ export default async function OrderSummaryPage() {
           </ul>
           {userAddress && (
             <div className="flex gap-2 items-center text-sm">
-              <div>
+              <div className="bg-background border border-dashed rounded p-4 flex-1">
                 <h4 className="text-sm text-muted-foreground truncate">
                   Teslimat Adresi
                 </h4>
@@ -99,7 +99,7 @@ export default async function OrderSummaryPage() {
                   </div>
                 </div>
               </div>
-              <div>
+              <div className="bg-background border border-dashed rounded p-4 flex-1">
                 <h4 className="text-sm text-muted-foreground truncate">
                   Fatura Adresi
                 </h4>

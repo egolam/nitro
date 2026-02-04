@@ -48,7 +48,7 @@ export function CityInfoField({
         name="province"
         control={form.control}
         render={({ field, fieldState }) => (
-          <Field data-invalid={fieldState.invalid}>
+          <Field data-invalid={fieldState.invalid} className="truncate">
             <FieldLabel htmlFor="province" className="text-muted-foreground">
               İL
             </FieldLabel>
@@ -77,7 +77,7 @@ export function CityInfoField({
         name="district"
         control={form.control}
         render={({ field, fieldState }) => (
-          <Field data-invalid={fieldState.invalid}>
+          <Field data-invalid={fieldState.invalid} className="truncate">
             <FieldLabel htmlFor="district" className="text-muted-foreground">
               İLÇE
             </FieldLabel>

@@ -14,7 +14,7 @@ import Providers from "@/providers/providers";
 const outfit = Google_Sans({
   subsets: ["latin"],
   weight: ["400", "700", "500", "600"],
-  variable: "--font-outfit",
+  fallback: ["Arial"],
   display: "swap",
 });
 

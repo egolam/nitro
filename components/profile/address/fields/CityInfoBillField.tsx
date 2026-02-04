@@ -32,7 +32,7 @@ export function CityInfoBillField({
   useEffect(() => {
     if (!province) return;
 
-    form.setValue("districtBill", isEditing ? form.getValues("district") : "", {
+    form.setValue("districtBill", isEditing ? form.getValues("districtBill") : "", {
       shouldDirty: true,
       shouldTouch: false,
       shouldValidate: false,
