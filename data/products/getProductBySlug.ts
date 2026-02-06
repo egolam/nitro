@@ -1,8 +1,7 @@
 import { db } from "@/db";
-import { products, favourites, productTags, tags, settings } from "@/db/schema";
-import { and, eq, sql } from "drizzle-orm";
+import { products, settings } from "@/db/schema";
+import { eq, sql } from "drizzle-orm";
 import { getExchangeRate } from "@/lib/exchange-rate";
-import { calculateProductPricePerGram, roundPrice } from "@/lib/pricing";
 
 export async function getProductBySlug(slug: string, userId?: string) {
   const data = await db.query.products.findFirst({
@@ -38,22 +37,6 @@ export async function getProductBySlug(slug: string, userId?: string) {
   const [appSettings] = await db.select().from(settings).limit(1);
   const exchangeRate = await getExchangeRate();
 
-  let pricePerGram = 0;
-  let minBuyPrice = 0;
-
-  if (data.price && appSettings) {
-    pricePerGram = calculateProductPricePerGram(
-      data.price.amountCents,
-      {
-        vat: appSettings.vat,
-        profitMargin: appSettings.profitMargin,
-        discount: appSettings.discount,
-      },
-      exchangeRate,
-    );
-    minBuyPrice = pricePerGram * data.minBuyGrams;
-  }
-
   return {
     id: data.id,
     sku: data.stockId,
@@ -67,17 +50,13 @@ export async function getProductBySlug(slug: string, userId?: string) {
     minBuyGrams: data.minBuyGrams,
     minBuyThreshold: data.minBuyThreshold,
     totalDemand: Number(data.totalDemand),
-    price: data.price
-      ? {
-          amountCents: data.price.amountCents,
-          currency: data.price.currency,
-          unitValue: data.price.unitValue,
-          unitType: data.price.unitType,
-          pricePerGram: roundPrice(pricePerGram),
-          minBuyPrice: roundPrice(minBuyPrice),
-          priceCurrency: "TRY",
-        }
-      : null,
+    price: {
+      amount: data.price?.amount,
+      vat: appSettings.vat,
+      profitMargin: appSettings.profitMargin,
+      discount: appSettings.discount,
+      exchangeRate: exchangeRate,
+    },
     tags: data.tags.map((pt) => ({
       id: pt.tag.id,
       name: pt.tag.name,

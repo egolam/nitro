@@ -2,13 +2,12 @@ import { db } from "@/db";
 import {
   productDemandsViewSQL,
   products,
-  settings as settingsSchema,
+  settings,
   productPrices,
 } from "@/db/schema";
 import { eq, desc, sql } from "drizzle-orm";
 import { cache } from "react";
 import { getExchangeRate } from "@/lib/exchange-rate";
-import { calculateProductPricePerGram, roundPrice } from "@/lib/pricing";
 
 export const getOrders = cache(async (userId: string) => {
   const data = await db
@@ -36,45 +35,35 @@ export const getOrders = cache(async (userId: string) => {
         minBuyThreshold: products.minBuyThreshold,
         gender: products.gender,
       },
+      price: {
+        amount: productPrices.amount,
+      },
     })
     .from(productDemandsViewSQL)
     .innerJoin(products, eq(productDemandsViewSQL.productId, products.id))
+    .innerJoin(productPrices, eq(products.id, productPrices.productId))
     .where(eq(productDemandsViewSQL.userId, userId))
-    .groupBy(products.id)
+    .groupBy(products.id, productPrices.id)
     .orderBy(desc(sql`max(${productDemandsViewSQL.createdAt})`));
 
   // Fetch settings and exchange rate
-  const [appSettings] = await db.select().from(settingsSchema).limit(1);
+  const [appSettings] = await db.select().from(settings).limit(1);
   const exchangeRate = await getExchangeRate();
 
-  const enhancedData = await Promise.all(
-    data.map(async (item) => {
-      // Fetch product price (base cost)
-      const [priceRow] = await db
-        .select()
-        .from(productPrices)
-        .where(eq(productPrices.productId, item.id));
-
-      let pricePerGram = 0;
-
-      if (priceRow && appSettings) {
-        pricePerGram = calculateProductPricePerGram(
-          priceRow.amountCents,
-          {
-            vat: appSettings.vat,
-            profitMargin: appSettings.profitMargin,
-            discount: appSettings.discount,
-          },
-          exchangeRate,
-        );
-      }
-
-      return {
-        ...item,
-        pricePerGram: roundPrice(pricePerGram),
-      };
-    }),
-  );
+  const enhancedData = data.map((item) => {
+    return {
+      ...item,
+      price: item.price
+        ? {
+            amount: item.price.amount,
+            vat: appSettings?.vat ?? 0,
+            profitMargin: appSettings?.profitMargin ?? 0,
+            discount: appSettings?.discount ?? 0,
+            exchangeRate: exchangeRate,
+          }
+        : undefined,
+    };
+  });
 
   return enhancedData;
 });

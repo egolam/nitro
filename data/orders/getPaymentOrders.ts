@@ -2,13 +2,12 @@ import { db } from "@/db";
 import {
   productDemands,
   products,
-  settings as settingsSchema,
   productPrices,
+  settings as settingsSchema,
 } from "@/db/schema";
 import { eq, desc, sql, and, isNull } from "drizzle-orm";
 import { cache } from "react";
 import { getExchangeRate } from "@/lib/exchange-rate";
-import { calculateProductPricePerGram, roundPrice } from "@/lib/pricing";
 
 export const getPaymentOrders = cache(async (userId: string) => {
   const data = await db
@@ -56,29 +55,17 @@ export const getPaymentOrders = cache(async (userId: string) => {
         .from(productPrices)
         .where(eq(productPrices.productId, item.id));
 
-      let pricePerGram = 0;
-      let totalPrice = 0;
-
-      if (priceRow && appSettings) {
-        pricePerGram = calculateProductPricePerGram(
-          priceRow.amountCents,
-          {
-            vat: appSettings.vat,
-            profitMargin: appSettings.profitMargin,
-            discount: appSettings.discount,
-          },
-          exchangeRate,
-        );
-
-        // Total price for the specific order amount
-        // validAmount is in grams
-        totalPrice = pricePerGram * item.validAmount;
-      }
-
       return {
         ...item,
-        pricePerGram: roundPrice(pricePerGram),
-        totalPrice: roundPrice(totalPrice),
+        price: priceRow
+          ? {
+              amount: priceRow.amount,
+              vat: appSettings?.vat ?? 0,
+              profitMargin: appSettings?.profitMargin ?? 0,
+              discount: appSettings?.discount ?? 0,
+              exchangeRate: exchangeRate,
+            }
+          : undefined,
         currency: "TRY",
       };
     }),
@@ -86,6 +73,6 @@ export const getPaymentOrders = cache(async (userId: string) => {
 
   return {
     orders: enhancedData,
-    shippingPrice: appSettings?.shippingPrice ?? 0,
+    shippingPrice: appSettings?.shippingPrice ?? 150,
   };
 });

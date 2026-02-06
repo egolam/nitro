@@ -7,6 +7,7 @@ import { notFound } from "next/navigation";
 import { ProgressBar } from "@/components/products/ProgressBar";
 import { AddOrderButton } from "@/components/products/AddOrderButton";
 import { FavoriteButton } from "@/components/products/FavoriteButton";
+import { calculateProductPricePerGram } from "@/helper/pricing";
 
 export default async function ProductDetailPage({
   params,
@@ -65,11 +66,18 @@ export default async function ProductDetailPage({
         </div>
         <div>
           <p className="text-xl font-medium">
-            {product.price &&
-              product.price.minBuyPrice.toLocaleString("tr-TR", {
-                style: "currency",
-                currency: "TRY",
-              })}{" "}
+            {calculateProductPricePerGram(
+              product.price?.amount!,
+              product.price?.vat!,
+              product.price?.profitMargin!,
+              product.price?.discount!,
+              product.price?.exchangeRate!,
+              product.minBuyGrams,
+              product.minBuyThreshold,
+            ).toLocaleString("tr-TR", {
+              style: "currency",
+              currency: "TRY",
+            })}{" "}
             <span className="text-xs text-muted-foreground">
               /{product.minBuyGrams}gr
             </span>

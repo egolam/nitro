@@ -13,6 +13,7 @@ import Link from "next/link";
 import { AddOrderButton } from "./AddOrderButton";
 import { ProgressBar } from "./ProgressBar";
 import { Mars, Venus, VenusAndMars } from "lucide-react";
+import { calculateProductPricePerGram } from "@/helper/pricing";
 
 type ProductCardProps = {
   product: ProductWithMeta;
@@ -78,12 +79,18 @@ export function ProductCard({
         <CardContent className="p-0 mt-4">
           <div className="flex flex-col gap-2">
             <p className="text-end leading-none font-medium">
-              {product.price?.minBuyPrice
-                ? product.price.minBuyPrice.toLocaleString("tr-TR", {
-                    style: "currency",
-                    currency: "TRY",
-                  })
-                : "Fiyat Sorunuz"}{" "}
+              {calculateProductPricePerGram(
+                product.price?.amount!,
+                product.price?.vat!,
+                product.price?.profitMargin!,
+                product.price?.discount!,
+                product.price?.exchangeRate!,
+                product.minBuyGrams,
+                product.minBuyThreshold,
+              ).toLocaleString("tr-TR", {
+                style: "currency",
+                currency: "TRY",
+              })}
               <span className="text-muted-foreground text-xs">
                 /{product.minBuyGrams}gr
               </span>

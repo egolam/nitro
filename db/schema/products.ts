@@ -6,6 +6,7 @@ import {
   integer,
   pgTable,
   primaryKey,
+  real,
   serial,
   text,
   timestamp,
@@ -133,7 +134,7 @@ export const productPrices = pgTable("product_prices", {
     .unique()
     .references(() => products.id, { onDelete: "cascade" }),
 
-  amountCents: integer("amount_cents").notNull(),
+  amount: real("amount").notNull(),
   currency: text("currency").notNull().default("usd"),
 
   unitValue: integer("unit_value").notNull().default(1),

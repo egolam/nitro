@@ -73,7 +73,6 @@ console.log("🌱 Seeding products...");
 const createdProducts: string[] = [];
 
 async function main() {
-
   // 🏷️ Seed Tags
   const tagIds: Record<string, number> = {};
   for (const name of TAG_NAMES) {
@@ -183,7 +182,7 @@ async function main() {
     // 💰 price
     await db.insert(productPrices).values({
       productId: product.id,
-      amountCents: Math.floor(2000 + Math.random() * 8000), // 20–100 USD
+      amount: Math.floor(20 + Math.random() * 80), // 20–100 USD
       currency: "usd",
       unitValue: 1,
       unitType: "kg",

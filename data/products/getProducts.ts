@@ -1,8 +1,7 @@
 import { db } from "@/db";
 import { products, favourites, productTags, tags, settings } from "@/db/schema";
-import { and, desc, lt, eq, exists, sql, inArray } from "drizzle-orm";
+import { and, eq, exists, sql } from "drizzle-orm";
 import { getExchangeRate } from "@/lib/exchange-rate";
-import { calculateProductPricePerGram, roundPrice } from "@/lib/pricing";
 
 export type ProductWithMeta = {
   id: string;
@@ -16,16 +15,13 @@ export type ProductWithMeta = {
   minBuyThreshold: number;
   totalDemand: number;
 
-  price: {
-    amountCents: number;
-    currency: string;
-    unitValue: number;
-    unitType: string;
-    // Calculated fields
-    pricePerGram?: number;
-    minBuyPrice?: number;
-    priceCurrency?: string;
-  } | null;
+  price?: {
+    amount: number | undefined;
+    vat: number;
+    profitMargin: number;
+    discount: number;
+    exchangeRate: number;
+  };
 
   tags: {
     id: number;
@@ -127,22 +123,6 @@ export async function getProducts(
 
   return {
     data: slicedData.map((p) => {
-      let pricePerGram = 0;
-      let minBuyPrice = 0;
-
-      if (p.price && appSettings) {
-        pricePerGram = calculateProductPricePerGram(
-          p.price.amountCents,
-          {
-            vat: appSettings.vat,
-            profitMargin: appSettings.profitMargin,
-            discount: appSettings.discount,
-          },
-          exchangeRate,
-        );
-        minBuyPrice = pricePerGram * p.minBuyGrams;
-      }
-
       return {
         id: p.id,
         factoryName: p.factoryName,
@@ -154,17 +134,13 @@ export async function getProducts(
         minBuyGrams: p.minBuyGrams,
         minBuyThreshold: p.minBuyThreshold,
         totalDemand: Number(p.totalDemand),
-        price: p.price
-          ? {
-              amountCents: p.price.amountCents,
-              currency: p.price.currency,
-              unitValue: p.price.unitValue,
-              unitType: p.price.unitType,
-              pricePerGram: roundPrice(pricePerGram),
-              minBuyPrice: roundPrice(minBuyPrice),
-              priceCurrency: "TRY",
-            }
-          : null,
+        price: {
+          amount: p.price?.amount,
+          vat: appSettings.vat,
+          profitMargin: appSettings.profitMargin,
+          discount: appSettings.discount,
+          exchangeRate: exchangeRate,
+        },
         tags: p.tags.map((pt) => ({
           id: pt.tag.id,
           name: pt.tag.name,
